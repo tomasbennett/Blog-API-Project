@@ -61,8 +61,6 @@ router.post("/files/upload", ensureAuthentication, upload.single("file"), async 
                 filename: originalname,
                 filesize: size,
                 filetype: mimetype,
-                parentFolderId: currentFolderId,
-                uploadedAt: new Date(),
                 supabaseFileId: storagePath,
             }
         });
@@ -84,7 +82,6 @@ router.post("/files/upload", ensureAuthentication, upload.single("file"), async 
                 name: newFilePrisma.filename,
                 size: newFilePrisma.filesize,
                 fileType: newFilePrisma.filetype,
-                parentFolderId: newFilePrisma.parentFolderId,
                 createdAt: newFilePrisma.uploadedAt,
             },
             message: "File uploaded successfully"

@@ -66,13 +66,7 @@ router.post("/register", ensureNotAuthenticated, async (req: Request<{}, {}, { u
         const newUser = await prisma.user.create({
             data: {
                 username,
-                password: hashedPassword,
-                rootFolder: {
-                    create: {
-                        name: "root",
-                        createdAt: new Date()
-                    }
-                }
+                password: hashedPassword
             }
         });
 

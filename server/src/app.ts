@@ -43,24 +43,6 @@ app.use(express.static(CLIENT_DIST));
 
 
 
-app.use(session({
-  name: "session-id",
-  secret: process.env.COOKIE_SECRET_NAME || "default_secret",
-  resave: false,
-  saveUninitialized: false,
-  proxy: environment === "PROD" ? true : false,
-  cookie: {
-    httpOnly: true,
-    secure: environment === "PROD",
-    sameSite: environment === "PROD" ? "none" : "lax",
-  },
-}));
-
-
-
-app.use(passport.initialize());
-app.use(passport.session());
-
 
 
 
