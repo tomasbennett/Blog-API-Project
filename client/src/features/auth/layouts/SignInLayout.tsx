@@ -4,9 +4,10 @@ import styles from "./SignInLayout.module.css";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { domain } from "../../../services/EnvironmentAPI";
-import { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { ISignInError, SignInErrorSchema, ILoginForm, loginFormSchema } from "../../../../../shared/features/auth/models/ILoginSchema";
 import { ISignInContext } from "../models/ISignInContext";
+import { BackgroundVideoContainer } from "../../../components/BackgroundVideoContainer";
 
 
 export function SignInLayout() {
@@ -124,65 +125,77 @@ export function SignInLayout() {
             <Outlet />
 
             <div className={styles.signinOuterContainer}>
-                <h2>{title}</h2>
 
-                {/* <form action={`/sign-in/${submitUrl}`} method="POST"> */}
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.backgroundVideoSection}>
+
+                    <BackgroundVideoContainer />
+
+                </div>
+
+
+                <div className={styles.loginSection}>
+
+                    <h2>{title}</h2>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        {
+                            errors.root && (
+                                <p className={styles.errorMessage}>{errors.root.message}</p>
+                            )
+                        }
+                        <div className={styles.inputGroup}>
+                            {
+                                errors.username && (
+                                    <p className={styles.errorMessage}>{errors.username.message}</p>
+                                )
+                            }
+                            <label htmlFor="username">Username</label>
+                            <input
+                                {...register("username")}
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter your username..."
+                            />
+                        </div>
+
+                        <div className={styles.inputGroup}>
+                            {
+                                errors.password && (
+                                    <p className={styles.errorMessage}>{errors.password.message}</p>
+                                )
+                            }
+                            <label htmlFor="password">Password</label>
+                            <input
+                                {...register("password")}
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password..."
+                            />
+                        </div>
+
+                        <button className={styles.submitButton} type="submit">Submit</button>
+                    </form>
                     {
-                        errors.root && (
-                            <p className={styles.errorMessage}>{errors.root.message}</p>
-                        )
+                        submitUrl === "login" ?
+
+                            <p className={styles.switchSignInParagraph}>
+                                Don't have an account?
+                                <Link to="/sign-in/register">Sign up here</Link>
+                            </p>
+                            :
+                            <p className={styles.switchSignInParagraph}>
+                                Already have an account?
+                                <Link to="/sign-in/login">Log in here</Link>
+                            </p>
+
                     }
-                    <div className={styles.inputGroup}>
-                        {
-                            errors.username && (
-                                <p className={styles.errorMessage}>{errors.username.message}</p>
-                            )
-                        }
-                        <label htmlFor="username">Username</label>
-                        <input
-                            {...register("username")}
-                            type="text"
-                            id="username"
-                            name="username"
-                            placeholder="Enter your username..."
-                        />
-                    </div>
+                </div>
 
-                    <div className={styles.inputGroup}>
-                        {
-                            errors.password && (
-                                <p className={styles.errorMessage}>{errors.password.message}</p>
-                            )
-                        }
-                        <label htmlFor="password">Password</label>
-                        <input
-                            {...register("password")}
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Enter your password..."
-                        />
-                    </div>
 
-                    <button className={styles.submitButton} type="submit">Submit</button>
 
-                </form>
-                {
-                    submitUrl === "login" ?
-
-                        <p className={styles.switchSignInParagraph}>
-                            Don't have an account?
-                            <Link to="/sign-in/register">Sign up here</Link>
-                        </p>
-                        :
-                        <p className={styles.switchSignInParagraph}>
-                            Already have an account?
-                            <Link to="/sign-in/login">Log in here</Link>
-                        </p>
-
-                }
             </div>
         </>
     )
 }
+

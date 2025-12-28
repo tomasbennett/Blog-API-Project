@@ -42,7 +42,7 @@ export function ProtectedRoute() {
     if (auth === null) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%', flex: '1 1 0' }}>
-                <LoadingCircle width="5rem" />
+                <LoadingCircle height="5rem" />
             </div>
         )
 
@@ -62,37 +62,38 @@ export function NotAuthenticatedRoute() {
     const [auth, setAuth] = useState<boolean | null>(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        async function checkAuth() {
-            try {
-                const response = await fetch(`${domain}/auth/check`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: { Accept: 'application/json' }
-                });
+    // useEffect(() => {
+    //     async function checkAuth() {
+    //         try {
+    //             const response = await fetch(`${domain}/auth/check`, {
+    //                 method: 'GET',
+    //                 credentials: 'include',
+    //                 headers: { Accept: 'application/json' }
+    //             });
 
-                if (response.ok) {
-                    setAuth(true);
-                } else if (response.status === 401) {
-                    setAuth(false);
-                } else {
-                    setAuth(false);
-                }
-            } catch {
-                setAuth(false);
-            }
-        }
+    //             if (response.ok) {
+    //                 setAuth(true);
+    //             } else if (response.status === 401) {
+    //                 setAuth(false);
+    //             } else {
+    //                 setAuth(false);
+    //             }
+    //         } catch {
+    //             setAuth(false);
+    //         }
+    //     }
 
-        checkAuth();
-    }, []);
+    //     checkAuth();
+    // }, []); UNCOMMENT WHEN READY TO USE AGAIN
 
+    return <Outlet />;
 
 
 
     if (auth === null) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%', flex: '1 1 0' }}>
-                <LoadingCircle width="5rem" />
+                <LoadingCircle height="5rem" />
             </div>
         )
     }

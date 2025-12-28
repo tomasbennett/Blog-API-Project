@@ -1,4 +1,4 @@
-.signinOuterContainer {
+/* .signinOuterContainer {
     
 
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -27,18 +27,55 @@
 
     border-radius: .5rem;
     box-shadow: 0 0 3rem rgba(0, 0, 0, .8);
-}
+} */
 
-.signinOuterContainer h2 {
+/* .signinOuterContainer h2 {
 
     margin-top: 3.5rem;
     margin-bottom: 3rem;
 
     font-size: 3.5rem;
     font-weight: 1800;
+} */
+
+
+.signinOuterContainer {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    overflow: hidden;
 }
 
-.signinOuterContainer > form{
+.signinOuterContainer > .backgroundVideoSection{
+    flex: 1 1 0;
+    position: relative;
+
+    height: 100%;
+
+    overflow: hidden;
+}
+
+.signinOuterContainer > .loginSection{
+    flex-shrink: 0;
+
+    height: 100%;
+    width: 40rem;
+
+    background-color: white;
+    color: black;
+
+    
+
+
+}
+
+
+
+
+
+.signinOuterContainer form{
     width: 100%;
     height: 100%;
 
@@ -84,7 +121,7 @@
     box-shadow: 0 0 .5rem rgba(255, 255, 255, 0.4);
 }
 
-.submitButton {
+/* .submitButton {
     width: 100%;
     max-width: 30rem;
 
@@ -102,7 +139,7 @@
 
 .submitButton:hover {
     background: var(--hover-button-colour);
-}
+} */
 
 .switchSignInParagraph {
     margin-top: auto;
