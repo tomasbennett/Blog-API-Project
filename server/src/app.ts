@@ -17,6 +17,14 @@ import "./passport/passportConfig";
 import { environment } from "../../shared/constants";
 
 
+import cookieParser from "cookie-parser";
+
+
+
+
+
+
+
 const SERVER = path.resolve(process.cwd(), "server");
 const CLIENT_DIST = path.resolve(process.cwd(), "client", "dist");
 
@@ -41,7 +49,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(CLIENT_DIST));
 
-
+app.use(cookieParser());
 
 
 
