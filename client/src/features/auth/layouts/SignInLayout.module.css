@@ -1,12 +1,22 @@
 
 .signinOuterContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-    width: 100%;
-    height: 100%;
+
+    width: 90%;
+    height: 90%;
 
     display: flex;
 
     overflow: hidden;
+
+    box-shadow: 0rem 0rem 3rem rgba(0, 0, 0, .5);
+    border-radius: 1rem;
+
+    
 }
 
 .signinOuterContainer > .backgroundVideoSection{
@@ -30,7 +40,7 @@
     min-width: min(40rem, 100%);
 
     box-shadow: -1rem 0rem 2rem rgba(24, 24, 24, 0.4);
-    border-left: rgb(65, 2, 148) .2rem solid;
+    /* border-left: rgb(65, 2, 148) .2rem solid; */
 
     background: linear-gradient(135deg, #e2e2e2 0%, #eac9ff 100%);
     
