@@ -1,5 +1,6 @@
 import styles from "./BackgroundVideoContainer.module.css";
 import video from "../assets/videos/login-therapeutic-screen.mp4";
+import { useRef } from "react";
 
 
 type IBackgroundVideoContainerProps = {
@@ -9,6 +10,11 @@ type IBackgroundVideoContainerProps = {
 export function BackgroundVideoContainer({
     children
 }: IBackgroundVideoContainerProps) {
+    // const videoRef = useRef<HTMLVideoElement | null>(null);
+    // const setPlayBack = () => {
+    //     videoRef.current!.playbackRate = 0.9;
+    // }; onCanPlay={setPlayBack} ref={videoRef}
+
     return (
         <>
             <div className={styles.backgroundVideoContainer}>

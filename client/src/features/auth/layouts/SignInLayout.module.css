@@ -1,45 +1,6 @@
-/* .signinOuterContainer {
-    
-
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-
-
-    width: 100%;
-    max-width: 35rem;
-    height: 100%;
-    max-height: 55rem;
-
-    background: linear-gradient(to bottom right, rgb(189, 231, 255), white);
-    color: rgb(29, 29, 29);
-
-    padding: 2rem;
-
-
-    border-radius: .5rem;
-    box-shadow: 0 0 3rem rgba(0, 0, 0, .8);
-} */
-
-/* .signinOuterContainer h2 {
-
-    margin-top: 3.5rem;
-    margin-bottom: 3rem;
-
-    font-size: 3.5rem;
-    font-weight: 1800;
-} */
-
 
 .signinOuterContainer {
+
     width: 100%;
     height: 100%;
 
@@ -58,26 +19,45 @@
 }
 
 .signinOuterContainer > .loginSection{
+    position: relative;
+
+    z-index: 2;
+
     flex-shrink: 0;
 
     height: 100%;
-    width: 40rem;
+    width: 30%;
+    min-width: min(40rem, 100%);
 
-    background-color: white;
+    box-shadow: -1rem 0rem 2rem rgba(24, 24, 24, 0.4);
+    border-left: rgb(65, 2, 148) .2rem solid;
+
+    background: linear-gradient(135deg, #e2e2e2 0%, #eac9ff 100%);
+    
+    background-color: #e2e2e2;
     color: black;
 
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
 
 }
 
 
+.loginSection > h2{
+    font-size: 3.4rem;
+    margin-bottom: 3rem;
+}
+
 
 
 
 .signinOuterContainer form{
+
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
 
     display: flex;
     flex-direction: column;
@@ -108,7 +88,7 @@
     padding-left: .6rem;
 
     font-size: 1.5rem;
-    border-radius: .2rem;
+    border-radius: .4rem;
     border: .1rem solid #333;
     background: #fff;
     color: #000;
@@ -116,20 +96,21 @@
 }
 
 .inputGroup input:focus {
-    border-color: #0f4fff;
+    border-color: #3d3bc5;
     outline: none;
     box-shadow: 0 0 .5rem rgba(255, 255, 255, 0.4);
 }
 
-/* .submitButton {
-    width: 100%;
-    max-width: 30rem;
+.submitButton {
+    /* width: 100%;
+    max-width: 30rem; */
 
-    padding: 1.2rem;
+    padding: 1.2rem 8rem;
+
     background: var(--blue-button-colour);
     color: white;
     border: none;
-    border-radius: .6rem;
+    border-radius: 6rem;
     margin-top: 2rem;
     font-size: 1.6rem;
     cursor: pointer;
@@ -139,10 +120,10 @@
 
 .submitButton:hover {
     background: var(--hover-button-colour);
-} */
+}
 
 .switchSignInParagraph {
-    margin-top: auto;
+    margin-top: 3rem;
     margin-bottom: 2rem;
 
     display: flex;
@@ -174,4 +155,35 @@
     color: red;
 
     margin-bottom: .5rem;
+}
+
+
+
+.welcomeMessageContainer{
+
+    display: flex;
+    flex-direction: column;
+
+    /* max-width: 80rem; */
+
+    background-color: rgba(0, 0, 0, 0.151);
+    border-radius: 1rem;
+    backdrop-filter: blur(.5rem);
+
+    margin-top: 10rem;
+
+
+    padding: 4rem 3rem;
+}
+
+
+.welcomeMessageContainer h1{
+    font-size: 6rem;
+    margin-bottom: 1.5rem;
+}
+
+
+.welcomeMessageContainer p{
+    font-size: 2rem;
+    line-height: 1.4;
 }

@@ -1,11 +1,11 @@
-/* @font-face {
-  font-family: "Orbitron";
-  src: url("../public/fonts/orbitron-font/static/Orbitron-Regular.ttf") format("truetype");
+@font-face {
+  font-family: "Nunito";
+  src: url("../public/fonts/Nunito/Nunito-VariableFont_wght.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
   
-} */
+}
 
 
 :root {
@@ -38,8 +38,8 @@
 
 html,
 body {
-  /* font-family: "Orbitron", "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; */
-  /* font-size-adjust: 0.5; */
+  font-family: "Nunito", "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size-adjust: 0.5;
   position: relative;
 
   font-size: 1.6rem;

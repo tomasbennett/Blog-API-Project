@@ -128,7 +128,12 @@ export function SignInLayout() {
 
                 <div className={styles.backgroundVideoSection}>
 
-                    <BackgroundVideoContainer />
+                    <BackgroundVideoContainer>
+                        <div className={styles.welcomeMessageContainer}>
+                            <h1>Welcome to my Blog API Project</h1>
+                            <p>Please log in here, or if you don't have an account register by clicking on Sign up here!</p>
+                        </div>
+                    </BackgroundVideoContainer>
 
                 </div>
 
