@@ -1,22 +1,16 @@
 import { User } from "@prisma/client";
 import { Response } from "express";
 
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { environment } from "../../../shared/constants";
 import { prisma } from "../db/prisma";
 import { ISignInError } from "../../../shared/features/auth/models/ILoginSchema";
 import { IAccessTokenResponse } from "../../../shared/features/auth/models/IAccessTokenResponse";
+import { CreateAccessToken } from "./CreateAccessToken";
 
 export async function issueSignedInResponse(user: User, res: Response<ISignInError | IAccessTokenResponse>) {
     try {
-        const accessToken = jwt.sign({
-            sub: user.id,
-            role: user.role
-        }, process.env.ACCESS_TOKEN_SECRET || "default_access_token_secret", {
-            expiresIn: '10m'
-        });
+        const accessToken = CreateAccessToken(user);
     
         const refreshToken = crypto.randomBytes(64).toString('hex');
         const refreshTokenHash = crypto
