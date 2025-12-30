@@ -13,6 +13,8 @@ import { ICustomSuccessMessage } from "../../../shared/features/api/models/APISu
 import { ILoginForm, ISignInError, usernamePasswordSchema } from "../../../shared/features/auth/models/ILoginSchema";
 import { environment } from "../../../shared/constants";
 import { IAccessTokenResponse } from "../../../shared/features/auth/models/IAccessTokenResponse";
+import { issueSignedInResponse } from "../services/IssueSignedInResponse";
+import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
 
 
 
@@ -66,43 +68,9 @@ router.post("/login", async (req: Request<{}, {}, ILoginForm>, res: Response<ISi
         }
 
         // WE WANT TO CREATE AN ACCESS TOKEN AND A REFRESH TOKEN FOR THE USER SENDING THE REFRESH TOKEN AS A COOKIE AND THE ACCESS TOKEN IN THE RESPONSE BODY
-        const accessToken = jwt.sign({
-            sub: user.id,
-            role: user.role
-        }, process.env.ACCESS_TOKEN_SECRET || "default_access_token_secret", {
-            expiresIn: '10m'
-        });
+        
+        await issueSignedInResponse(user, res);
 
-        const refreshToken = crypto.randomBytes(64).toString('hex');
-
-        const refreshTokenHash = await bcrypt.hash(refreshToken, process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10);
-
-
-
-        const expiry: number = 7 * 24 * 60 * 60 * 1000;
-
-        await prisma.refreshToken.create({
-            data: {
-                hashedToken: refreshTokenHash,
-                userId: user.id,
-                expiresAt: new Date(Date.now() + expiry)
-            }
-        });
-
-        res
-            .cookie("refreshToken", refreshToken, {
-                httpOnly: true,
-                secure: environment === "PROD",
-                sameSite: environment === "PROD" ? "none" : "lax",
-                maxAge: expiry
-            })
-            .status(200)
-            .json({
-                message: "Login successful",
-                ok: true,
-                status: 200,
-                accessToken
-            });
 
 
 
@@ -152,6 +120,16 @@ router.post("/register", async (req: Request<{}, {}, ILoginForm>, res: Response<
         //     return res.status(201).json({ message: "User registered successfully", user: newUser });
         // });
 
+        const hashedPassword = await bcrypt.hash(password, process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10);
+
+        const user = await prisma.user.create({
+            data: {
+                username,
+                password: hashedPassword
+            }
+        });
+
+        await issueSignedInResponse(user, res);
 
         
 
@@ -173,8 +151,57 @@ router.post("/register", async (req: Request<{}, {}, ILoginForm>, res: Response<
 });
 
 
+router.delete("/logout", async (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
+    const refreshToken: string | undefined = req.cookies?.refreshToken;
 
-router.delete("/logout", ensureAuthentication, (req: Request, res: Response, next: NextFunction) => {
+    if (!refreshToken) {
+        return res.status(400).json({
+            message: "No refresh token provided!!!",
+            ok: false,
+            status: 400
+        });
+    }
+
+    try {
+
+        const tokenHash = crypto
+            .createHash("sha256")
+            .update(refreshToken)
+            .digest("hex");
+
+        const deletedRefreshToken = await prisma.refreshToken.delete({
+            where: {
+                hashedToken: tokenHash
+            }
+        });
+
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: environment === "PROD",
+            sameSite: environment === "PROD" ? "none" : "lax"
+        });
+
+        return res.sendStatus(204);
+
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === "P2025") {
+                return res.status(400).json({
+                    message: "Refresh token not found for deletion!!!",
+                    ok: false,
+                    status: 400
+                });
+
+            }
+
+        }
+
+
+        return next(error);
+
+    }
+
+
 
 
 });
