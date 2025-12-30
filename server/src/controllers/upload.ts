@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { ensureAuthentication } from "../passport/ensureAuthentication";
+import { ensureAuthentication } from "../auth/ensureAuthentication";
 import upload from "../supabase/multer";
 import { supabase } from "../supabase/client";
 import { prisma } from "../db/prisma";

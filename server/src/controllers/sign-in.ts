@@ -8,7 +8,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import crypto from "crypto";
 
-import { ensureAuthentication, ensureNotAuthenticated } from "../passport/ensureAuthentication";
+import { ensureAuthentication } from "../auth/ensureAuthentication";
 import { ICustomSuccessMessage } from "../../../shared/features/api/models/APISuccessResponse";
 import { ILoginForm, ISignInError, usernamePasswordSchema } from "../../../shared/features/auth/models/ILoginSchema";
 import { environment } from "../../../shared/constants";
@@ -151,7 +151,7 @@ router.post("/register", async (req: Request<{}, {}, ILoginForm>, res: Response<
 });
 
 
-router.delete("/logout", async (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
+router.delete("/logout", ensureAuthentication, async (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
     const refreshToken: string | undefined = req.cookies?.refreshToken;
 
     if (!refreshToken) {

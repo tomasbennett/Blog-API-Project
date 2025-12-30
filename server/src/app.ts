@@ -13,7 +13,7 @@ import { router as apiRouter } from "./controllers/api";
 
 
 
-import "./passport/passportConfig";
+import "./auth/passportConfig";
 import { environment } from "../../shared/constants";
 
 
