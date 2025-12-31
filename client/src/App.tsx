@@ -14,7 +14,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorElement />,
     children: [
       {
-        index: true
+        index: true,
+        element: <Navigate to="blogs" replace />
       },
       {
         path: "error",
@@ -50,7 +51,10 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-
+          {
+            path: "blogs",
+            element: <p>HELLO WORKSDS!!!!</p>
+          }
         ]
       }
     ]

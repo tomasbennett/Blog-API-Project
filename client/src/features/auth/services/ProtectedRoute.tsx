@@ -2,41 +2,20 @@ import { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { LoadingCircle } from "../../../components/LoadingCircle";
 import { domain } from "../../../services/EnvironmentAPI";
+import { accessTokenLocalStorageKey } from "../constants";
+import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
+import { APIErrorSchema } from "../../../../../shared/features/api/models/APIErrorResponse";
+import { notExpectedFormatError } from "../../../constants/constants";
+import { ISignInError } from "../../../../../shared/features/auth/models/ILoginSchema";
+import { NewAccessTokenRequest } from "./NewAccessTokenRequest";
+import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHandler";
+import { useCheckAuth } from "../hooks/useCheckAuth";
+
+
+
 
 export function ProtectedRoute() {
-    const [auth, setAuth] = useState<boolean | null>(null);
-    const navigate = useNavigate();
-
-    useEffect(() => {   
-        async function checkAuth() {
-            try {
-                console.log("Checking auth...");
-                const response = await fetch(`${domain}/auth/check`, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: { Accept: 'application/json' }
-                });
-                console.log("Fetch response received");
-    
-                if (response.ok) {
-                    setAuth(true);
-
-                } else {
-                    const data = await response.json();
-                    console.log(data?.message);
-                    console.log("not authenticated");
-                    setAuth(false);
-
-                }
-            } catch (error) {
-                console.log("Fetch error:", error);
-                setAuth(false);
-            }
-        }
-    
-        checkAuth();
-    }, []);
-
+    const { auth } = useCheckAuth();
 
 
     if (auth === null) {
@@ -59,34 +38,7 @@ export function ProtectedRoute() {
 
 
 export function NotAuthenticatedRoute() {
-    const [auth, setAuth] = useState<boolean | null>(null);
-    const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     async function checkAuth() {
-    //         try {
-    //             const response = await fetch(`${domain}/auth/check`, {
-    //                 method: 'GET',
-    //                 credentials: 'include',
-    //                 headers: { Accept: 'application/json' }
-    //             });
-
-    //             if (response.ok) {
-    //                 setAuth(true);
-    //             } else if (response.status === 401) {
-    //                 setAuth(false);
-    //             } else {
-    //                 setAuth(false);
-    //             }
-    //         } catch {
-    //             setAuth(false);
-    //         }
-    //     }
-
-    //     checkAuth();
-    // }, []); UNCOMMENT WHEN READY TO USE AGAIN
-
-    return <Outlet />;
+    const { auth } = useCheckAuth();
 
 
 

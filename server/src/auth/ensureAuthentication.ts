@@ -52,7 +52,7 @@ export async function ensureAuthentication(req: Request, res: Response<ICustomEr
     } catch (err) {
 
         if (err instanceof Error) {
-            const message = err.name === "TokenExpiredError" ? "Access token expired." : err.name;
+            const message = err.name === "TokenExpiredError" ? "Access token expired!!!" : err.name;
             return res.status(expiredAccessTokenStatus).json({
                 ok: false,
                 status: expiredAccessTokenStatus,

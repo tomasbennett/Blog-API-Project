@@ -7,6 +7,7 @@ import { prisma } from "../db/prisma";
 import { IAccessTokenResponse } from "../../../shared/features/auth/models/IAccessTokenResponse";
 import { CreateAccessToken } from "../services/CreateAccessToken";
 import { invalidRefreshTokenStatus } from "../../../shared/features/auth/constants";
+import { ensureAuthentication } from "../auth/ensureAuthentication";
 
 
 export const router = Router();
@@ -21,6 +22,23 @@ export const router = Router();
 //     }
 // });
 
+
+router.get("/auth/checkAccessToken", ensureAuthentication, (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
+    if (req.user) {
+        return res.status(200).json({
+            ok: true,
+            status: 200,
+            message: "User is authenticated with access token"
+        });
+    }
+
+    return res.status(401).json({
+        ok: false,
+        status: 401,
+        message: "User is not authenticated with their access token"
+    });
+
+});
 
 router.get("/auth/refreshToken", async (req: Request, res: Response<ICustomErrorResponse | IAccessTokenResponse>, next: NextFunction) => {
     const refreshToken: string | undefined = req.cookies?.refreshToken;

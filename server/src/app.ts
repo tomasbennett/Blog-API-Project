@@ -10,10 +10,9 @@ import passport from "passport";
 
 
 import { router as apiRouter } from "./controllers/api";
+import { router as authRouter } from "./controllers/auth"
 
 
-
-import "./auth/passportConfig";
 import { environment } from "../../shared/constants";
 
 
@@ -56,7 +55,7 @@ app.use(cookieParser());
 
 
 
-app.use("/api", apiRouter);
+app.use("/api", apiRouter, authRouter);
 
 
 app.get(/.*/, (req: Request, res: Response, next: NextFunction) => {
