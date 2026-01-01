@@ -11,12 +11,15 @@ import passport from "passport";
 
 import { router as apiRouter } from "./controllers/api";
 import { router as authRouter } from "./controllers/auth"
+import { router as signInRouter } from "./controllers/sign-in";
 
 
 import { environment } from "../../shared/constants";
 
 
 import cookieParser from "cookie-parser";
+import { ICustomErrorResponse } from "../../shared/features/api/models/APIErrorResponse";
+
 
 
 
@@ -43,6 +46,7 @@ app.use(cors({
   origin: environment === "PROD" ? true : allowedOrigins,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-type", "Authorization"]
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -53,9 +57,7 @@ app.use(cookieParser());
 
 
 
-
-
-app.use("/api", apiRouter, authRouter);
+app.use("/api", apiRouter, authRouter, signInRouter);
 
 
 app.get(/.*/, (req: Request, res: Response, next: NextFunction) => {
@@ -68,7 +70,21 @@ app.get(/.*/, (req: Request, res: Response, next: NextFunction) => {
 
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  return;
+  if (err instanceof Error) {
+    const error: ICustomErrorResponse = {
+      ok: false,
+      status: 501,
+      message: err.message + " : " + err.name
+    }
+  }
+
+  const error: ICustomErrorResponse = {
+    ok: false,
+    status: 501,
+    message: "THE ERROR FINALLY TRIGGERED"
+  }
+  
+  return error;
 });
 
 

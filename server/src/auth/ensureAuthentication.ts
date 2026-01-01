@@ -8,6 +8,8 @@ import { expiredAccessTokenStatus } from "../../../shared/features/auth/constant
 
 
 export async function ensureAuthentication(req: Request, res: Response<ICustomErrorResponse>, next: NextFunction) {
+    console.log("HELLO WRLD!!!");
+    
     const header = req.headers.authorization;
 
     if (!header || !header.startsWith("Bearer ")) {
@@ -21,7 +23,7 @@ export async function ensureAuthentication(req: Request, res: Response<ICustomEr
     const token = header.split(" ")[1];
 
     try {
-        const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || "default_access_token_secret") as { sub?: string };
+        const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET || "default_access_token_secret");
 
         if (!payload?.sub || typeof payload.sub !== "string") {
             return res.status(400).json({

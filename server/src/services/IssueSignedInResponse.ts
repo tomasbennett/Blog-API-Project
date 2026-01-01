@@ -7,6 +7,7 @@ import { prisma } from "../db/prisma";
 import { ISignInError } from "../../../shared/features/auth/models/ILoginSchema";
 import { IAccessTokenResponse } from "../../../shared/features/auth/models/IAccessTokenResponse";
 import { CreateAccessToken } from "./CreateAccessToken";
+import { refreshTokenCookieKey } from "../constants/constants";
 
 export async function issueSignedInResponse(user: User, res: Response<ISignInError | IAccessTokenResponse>) {
     try {
@@ -31,7 +32,7 @@ export async function issueSignedInResponse(user: User, res: Response<ISignInErr
         });
     
         res
-            .cookie("refreshToken", refreshToken, {
+            .cookie(refreshTokenCookieKey, refreshToken, {
                 httpOnly: true,
                 secure: environment === "PROD",
                 sameSite: environment === "PROD" ? "none" : "lax",

@@ -8,6 +8,8 @@ import { useEffect, useMemo, useRef } from "react";
 import { ISignInError, SignInErrorSchema, ILoginForm, loginFormSchema } from "../../../../../shared/features/auth/models/ILoginSchema";
 import { ISignInContext } from "../models/ISignInContext";
 import { BackgroundVideoContainer } from "../../../components/BackgroundVideoContainer";
+import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
+import { accessTokenLocalStorageKey } from "../constants";
 
 
 export function SignInLayout() {
@@ -46,12 +48,12 @@ export function SignInLayout() {
 
     }, []);
 
-    
-    
 
-    
-    
-    
+
+
+
+
+
     const {
         register,
         handleSubmit,
@@ -64,8 +66,8 @@ export function SignInLayout() {
         reValidateMode: "onChange",
         errors: defaultErrors
     });
-    
-    
+
+
 
     const prevPathRef = useRef(location.pathname);
 
@@ -87,32 +89,36 @@ export function SignInLayout() {
 
     const onSubmit: SubmitHandler<ILoginForm> = async (data) => {
         try {
-            const response = await fetch(`${domain}/sign-in/${submitUrl}`, {
+            const response = await fetch(`${domain}/api/${submitUrl}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                credentials: "include",
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                credentials: "include"
             });
 
-            if (response.ok) {
-                navigate("/", { replace: true });
+
+            const responseData = await response.json();
+            
+            const accessTokenResult = AccessTokenResponseSchema.safeParse(responseData);
+            if (accessTokenResult.success) {
+                localStorage.setItem(accessTokenLocalStorageKey, accessTokenResult.data.accessToken);
+                navigate("/");
                 return;
+            }
+            
+            
+            const errorResult = SignInErrorSchema.safeParse(responseData);
+            if (errorResult.success) {
+                setError(errorResult.data.inputType, { type: "server", message: errorResult.data.message });
 
             } else {
-                const responseData = await response.json();
-                const errorResult = SignInErrorSchema.safeParse(responseData);
-
-                if (errorResult.success) {
-                    setError(errorResult.data.inputType, { type: "server", message: errorResult.data.message });
-
-                } else {
-                    setError("root", { type: "server", message: "An unknown error occurred." }); //PLEASE DON'T FORGET FOR LATER PROJECTS THAT root CAN HAVE ADDITIONAL PROPERTIES ATTACHED TO IT FOR CUSTOM ERRORS IF YOU HAVE A SERVER ERROR UNRELATED TO THE USER INPUTS LIKE root.serverError
-
-                }
+                setError("root", { type: "server", message: "An unknown error occurred." }); //PLEASE DON'T FORGET FOR LATER PROJECTS THAT root CAN HAVE ADDITIONAL PROPERTIES ATTACHED TO IT FOR CUSTOM ERRORS IF YOU HAVE A SERVER ERROR UNRELATED TO THE USER INPUTS LIKE root.serverError
 
             }
+
+
 
         } catch (error) {
             setError("root", { type: "server", message: "Failed to connect to the server." });

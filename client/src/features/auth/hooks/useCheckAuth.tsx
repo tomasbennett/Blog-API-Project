@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHandler";
 import { accessTokenLocalStorageKey } from "../constants";
 import { NewAccessTokenRequest } from "../services/NewAccessTokenRequest";
@@ -16,6 +16,7 @@ export function useCheckAuth() {
                 //CHECK IF THE ACCESS TOKEN YOU HAVE WORKS IF NOT REFRESH AND THEN SET AUTH
                 const accessToken = localStorage.getItem(accessTokenLocalStorageKey);
                 if (!accessToken) {
+                    console.log("ACCESS TOKEN NOT FOUND");
                     //IMMEDIATELY ASK THE REFRESH TOKEN FOR A NEW ONE
                     
                     const newAccessToken = await NewAccessTokenRequest(navigate);
@@ -30,19 +31,26 @@ export function useCheckAuth() {
 
 
                 }
+                
+                console.log("ACCESS TOKEN FOUND: " + accessToken);
 
-                //NOW USE THE ACCESS TOKEN TO ACCESS THE CHECK/AUTH
-                const authRequest = await fetch(`${domain}/auth/checkAccessToken`, {
+                
+                const authRequest = await fetch(`${domain}/random`, {
                     method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
+
                 });
+                console.log("DOES THE REQ EVEN SEND");
+
+
+
 
                 if (authRequest.ok) {
+                    console.log("ACCESS TOKEN OK: ", authRequest);
                     setAuth(true);
                     return;
                 }
+
+                console.log("ACCESS TOKEN NOT OK: ", authRequest);
 
                 const newAccessToken = await NewAccessTokenRequest(navigate);
 
@@ -57,6 +65,7 @@ export function useCheckAuth() {
 
             } catch (error) {
 
+                console.log("ERROR OCCURS WHEN FETCHING WITH ACCESS TOKEN: ", error);
                 setAuth(false);
                 SendToSignInErrorHandler(error, navigate);
 

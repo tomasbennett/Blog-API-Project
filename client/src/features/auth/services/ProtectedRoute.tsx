@@ -15,7 +15,79 @@ import { useCheckAuth } from "../hooks/useCheckAuth";
 
 
 export function ProtectedRoute() {
-    const { auth } = useCheckAuth();
+    const [auth, setAuth] = useState<boolean | null>(null);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function checkAuth() {
+            try {
+                //CHECK IF THE ACCESS TOKEN YOU HAVE WORKS IF NOT REFRESH AND THEN SET AUTH
+                const accessToken = localStorage.getItem(accessTokenLocalStorageKey);
+                if (!accessToken) {
+                    console.log("ACCESS TOKEN NOT FOUND");
+                    //IMMEDIATELY ASK THE REFRESH TOKEN FOR A NEW ONE
+                    
+                    const newAccessToken = await NewAccessTokenRequest(navigate);
+
+                    if (!newAccessToken) {
+                        setAuth(false);
+                        return;
+                    }
+
+                    setAuth(true);
+                    return;
+
+
+                }
+                
+                console.log("ACCESS TOKEN FOUND: " + accessToken);
+
+                
+                const authRequest = await fetch(`${domain}/random`, {
+                    method: "GET",
+
+                });
+                console.log("DOES THE REQ EVEN SEND");
+
+
+
+
+                if (authRequest.ok) {
+                    console.log("ACCESS TOKEN OK: ", authRequest);
+                    setAuth(true);
+                    return;
+                }
+
+                console.log("ACCESS TOKEN NOT OK: ", authRequest);
+
+                const newAccessToken = await NewAccessTokenRequest(navigate);
+
+                if (!newAccessToken) {
+                    setAuth(false);
+                    return;
+                };
+
+                setAuth(true);
+                return;
+
+
+            } catch (error) {
+
+                console.log("ERROR OCCURS WHEN FETCHING WITH ACCESS TOKEN: ", error);
+                setAuth(false);
+                SendToSignInErrorHandler(error, navigate);
+
+
+            }
+        }
+
+        checkAuth();
+    }, []);
+
+    useEffect(() => {
+        console.log("Protected route is running: " + auth);
+    }, []);
 
 
     if (auth === null) {
@@ -38,8 +110,79 @@ export function ProtectedRoute() {
 
 
 export function NotAuthenticatedRoute() {
-    const { auth } = useCheckAuth();
+    const [auth, setAuth] = useState<boolean | null>(null);
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function checkAuth() {
+            try {
+                //CHECK IF THE ACCESS TOKEN YOU HAVE WORKS IF NOT REFRESH AND THEN SET AUTH
+                const accessToken = localStorage.getItem(accessTokenLocalStorageKey);
+                if (!accessToken) {
+                    console.log("ACCESS TOKEN NOT FOUND");
+                    //IMMEDIATELY ASK THE REFRESH TOKEN FOR A NEW ONE
+                    
+                    const newAccessToken = await NewAccessTokenRequest(navigate);
+
+                    if (!newAccessToken) {
+                        setAuth(false);
+                        return;
+                    }
+
+                    setAuth(true);
+                    return;
+
+
+                }
+                
+                console.log("ACCESS TOKEN FOUND: " + accessToken);
+
+                
+                const authRequest = await fetch(`${domain}/random`, {
+                    method: "GET",
+
+                });
+                console.log("DOES THE REQ EVEN SEND");
+
+
+
+
+                if (authRequest.ok) {
+                    console.log("ACCESS TOKEN OK: ", authRequest);
+                    setAuth(true);
+                    return;
+                }
+
+                console.log("ACCESS TOKEN NOT OK: ", authRequest);
+
+                const newAccessToken = await NewAccessTokenRequest(navigate);
+
+                if (!newAccessToken) {
+                    setAuth(false);
+                    return;
+                };
+
+                setAuth(true);
+                return;
+
+
+            } catch (error) {
+
+                console.log("ERROR OCCURS WHEN FETCHING WITH ACCESS TOKEN: ", error);
+                setAuth(false);
+                SendToSignInErrorHandler(error, navigate);
+
+
+            }
+        }
+
+        checkAuth();
+    }, []);
+
+    useEffect(() => {
+        console.log("Notprotected route is running: " + auth);
+    }, []);
 
 
     if (auth === null) {

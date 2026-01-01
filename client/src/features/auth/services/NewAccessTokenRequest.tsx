@@ -13,6 +13,7 @@ export async function NewAccessTokenRequest(
 ): Promise<string | undefined> {
     try {
 
+        console.log("THE NEW ACCESS TOKEN REQ RUNS");
         const newAccessTokenReq = await fetch(`${domain}/api/auth/refreshToken`, {
             credentials: "include"
         });
@@ -60,6 +61,7 @@ export async function NewAccessTokenRequest(
 
     } catch (error) {
 
+        console.log("ERROR OCCURS WHEN FETCHING without ACCESS TOKEN: ", error);
         SendToSignInErrorHandler(error, navigate);
 
 

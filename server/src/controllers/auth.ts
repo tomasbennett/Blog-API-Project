@@ -12,16 +12,6 @@ import { ensureAuthentication } from "../auth/ensureAuthentication";
 
 export const router = Router();
 
-// router.get("/auth/check", (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
-//     if (req.isAuthenticated && req.isAuthenticated()) {
-//         res.status(200).json({ message: "Authenticated" });
-
-//     } else {
-//         res.status(401).json({ message: "Not authenticated" });
-
-//     }
-// });
-
 
 router.get("/auth/checkAccessToken", ensureAuthentication, (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
     if (req.user) {

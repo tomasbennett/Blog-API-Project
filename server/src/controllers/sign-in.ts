@@ -15,6 +15,7 @@ import { environment } from "../../../shared/constants";
 import { IAccessTokenResponse } from "../../../shared/features/auth/models/IAccessTokenResponse";
 import { issueSignedInResponse } from "../services/IssueSignedInResponse";
 import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
+import { refreshTokenCookieKey } from "../constants/constants";
 
 
 
@@ -175,7 +176,7 @@ router.delete("/logout", ensureAuthentication, async (req: Request, res: Respons
             }
         });
 
-        res.clearCookie("refreshToken", {
+        res.clearCookie(refreshTokenCookieKey, {
             httpOnly: true,
             secure: environment === "PROD",
             sameSite: environment === "PROD" ? "none" : "lax"
