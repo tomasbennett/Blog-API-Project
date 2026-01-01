@@ -35,11 +35,12 @@ export function useCheckAuth() {
                 console.log("ACCESS TOKEN FOUND: " + accessToken);
 
                 
-                const authRequest = await fetch(`${domain}/random`, {
+                const authRequest = await fetch(`${domain}/api/auth/checkAccessToken`, {
                     method: "GET",
-
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
                 });
-                console.log("DOES THE REQ EVEN SEND");
 
 
 

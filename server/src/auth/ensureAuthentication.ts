@@ -8,7 +8,6 @@ import { expiredAccessTokenStatus } from "../../../shared/features/auth/constant
 
 
 export async function ensureAuthentication(req: Request, res: Response<ICustomErrorResponse>, next: NextFunction) {
-    console.log("HELLO WRLD!!!");
     
     const header = req.headers.authorization;
 
