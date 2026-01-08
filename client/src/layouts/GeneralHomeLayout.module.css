@@ -10,7 +10,30 @@
 
     overflow: hidden;
 
-    background: linear-gradient(315deg, #4c00af 0%, #003494 100%);
+    /* background: linear-gradient(135deg, #8b5cf6, #5f9cff); */
+    /* background: linear-gradient(135deg, #2563eb, #7c3aed);
+    background: linear-gradient(
+  135deg,
+  #3b82f6 0%,
+  #6366f1 50%,
+  #8b5cf6 100%
+); */
+
 
     /* padding: 2rem; */
+    background: linear-gradient(
+      270deg,
+      #2563eb,
+      #6366f1,
+      #7c3aed
+    );
+    background-size: 600% 600%;
+    animation: gradientMove 12s ease infinite;
+}
+
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

@@ -1,0 +1,113 @@
+.header{
+    height: 9rem;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: .1rem white solid;
+
+    box-shadow: 0rem 1rem 1rem rgba(0, 0, 0, 0.2);
+
+    color: aliceblue;
+    fill: aliceblue;
+
+    font-weight: bolder;
+
+
+    padding: 1rem 2rem;
+}
+
+
+.logoImgContainer{
+    flex-shrink: 0;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    row-gap: .8rem;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+
+    & > svg {
+        height: 100%;
+
+
+        object-fit: cover;
+        overflow: hidden;
+    }
+
+
+}
+
+
+.rightSideHeaderContainer{
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    column-gap: 4rem;
+}
+
+
+
+
+
+
+
+.pageSelectionContainer{
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    column-gap: 3rem;
+
+    list-style: none;
+
+    & a{
+        text-decoration: none;
+
+    }
+
+
+}
+
+
+
+.signInOrOutContainer{
+
+    flex-shrink: 0;
+
+    height: 70%;
+
+    padding: .6rem;
+
+    border-radius: 1rem;
+    border: .1rem solid transparent;
+    
+
+    transition: border .2s linear, background-color .2s linear;
+
+    cursor: pointer;
+
+    & > svg{
+        height: 100%;
+
+        object-fit: contain;
+        overflow: hidden;
+
+    }
+}
+
+
+.signInOrOutContainer:hover{
+    background-color: rgba(255, 255, 255, 0.2);
+
+    border: .1rem solid white;
+
+}

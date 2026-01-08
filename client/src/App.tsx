@@ -5,6 +5,7 @@ import { SignInLayout } from './features/auth/layouts/SignInLayout'
 import { NotAuthenticatedRoute, ProtectedRoute } from './features/auth/services/ProtectedRoute'
 import { ErrorElement } from './features/error/services/ErrorElement'
 import { ErrorPageLayout } from './features/error/layouts/ErrorLayout'
+import { HeaderNavBar } from './components/HeaderNavBar'
 
 
 const router = createBrowserRouter([
@@ -52,9 +53,17 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           {
-            path: "blogs",
-            element: <p>HELLO WORKSDS!!!!</p>
-          }
+            element: <HeaderNavBar />,
+            children: [
+              {
+                path: "blogs",
+                element: <p>HELLO WORKSDS!!!!</p>
+              },
+              {
+                path: "home"
+              }
+            ]
+          },
         ]
       }
     ]
