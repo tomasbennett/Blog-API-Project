@@ -1,0 +1,59 @@
+.outerContainer{
+    flex: 1 1 0;
+
+    width: 100%;
+
+    overflow: hidden;
+
+
+    display: grid;
+    grid-template-areas: "header scroll"
+                         "main scroll";
+    grid-template-columns: 1fr 30rem;
+    grid-template-rows: auto
+                        1fr;
+
+    gap: 2rem;
+
+    color: black;
+
+
+}
+
+.outerContainer > *{
+    background-color: rgb(247, 247, 247);
+}
+
+
+.introContainer{
+    grid-area: header;
+
+
+    
+    & > h2{
+        font-weight: bolder;
+        font-size: 4rem;
+
+        line-height: 4.5rem;
+
+        margin-bottom: 1rem;
+    }
+
+
+    & > p{
+        font-size: large;
+    }
+}
+
+
+
+.currBlogSection{
+    grid-area: main;
+}
+
+
+
+
+.blogListScrollerSection{
+    grid-area: scroll;
+}

@@ -9,7 +9,7 @@ import { ISignInError, SignInErrorSchema, ILoginForm, loginFormSchema } from "..
 import { ISignInContext } from "../models/ISignInContext";
 import { BackgroundVideoContainer } from "../../../components/BackgroundVideoContainer";
 import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
-import { accessTokenLocalStorageKey } from "../constants";
+import { accessTokenLocalStorageKey } from "../../../constants/constants";
 
 
 export function SignInLayout() {

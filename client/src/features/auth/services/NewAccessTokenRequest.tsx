@@ -2,9 +2,8 @@ import { NavigateFunction } from "react-router-dom";
 import { APIErrorSchema } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
 import { ISignInError } from "../../../../../shared/features/auth/models/ILoginSchema";
-import { notExpectedFormatError } from "../../../constants/constants";
+import { accessTokenLocalStorageKey, notExpectedFormatError } from "../../../constants/constants";
 import { domain } from "../../../services/EnvironmentAPI";
-import { accessTokenLocalStorageKey } from "../constants";
 import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHandler";
 import { invalidRefreshTokenStatus } from "../../../../../shared/features/auth/constants";
 

@@ -1,1 +1,0 @@
-export const accessTokenLocalStorageKey: string = "accessToken";

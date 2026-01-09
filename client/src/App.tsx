@@ -6,6 +6,8 @@ import { NotAuthenticatedRoute, ProtectedRoute } from './features/auth/services/
 import { ErrorElement } from './features/error/services/ErrorElement'
 import { ErrorPageLayout } from './features/error/layouts/ErrorLayout'
 import { HeaderNavBar } from './components/HeaderNavBar'
+import { ContentPagesLayout } from './layouts/ContentPagesLayout'
+import { MainHomePage } from './features/blogs/layouts/MainHomePage'
 
 
 const router = createBrowserRouter([
@@ -53,14 +55,19 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           {
-            element: <HeaderNavBar />,
+            element: <ContentPagesLayout />,
             children: [
               {
                 path: "blogs",
-                element: <p>HELLO WORKSDS!!!!</p>
+                element: <MainHomePage />
               },
               {
-                path: "home"
+                path: "about",
+                element: <p>ABOUT PAGE</p>
+              },
+              {
+                path: "contacts",
+                element: <p>CONTACTS PAGE</p>
               }
             ]
           },

@@ -10,7 +10,6 @@ export async function basicResponseHandle<T extends FieldValues>(
     fetchOptions: RequestInit,
     navigate: NavigateFunction,
     setIsError: React.Dispatch<React.SetStateAction<ICustomErrorResponse | null>>,
-    setFormError?: UseFormSetError<T>
 ): Promise<Response | null> {
     try {
         const response = await fetch(url, fetchOptions);
@@ -35,10 +34,6 @@ export async function basicResponseHandle<T extends FieldValues>(
             } catch (err) {
                 console.error("Error parsing server error response:", err);
                 setIsError(jsonParsingError);
-                setFormError?.("root", {
-                    message: jsonParsingError.message,
-                    type: "server"
-                });
                 return null;
 
             }
@@ -108,10 +103,6 @@ export async function basicResponseHandle<T extends FieldValues>(
             message: error.message
         };
         setIsError(customError);
-        setFormError?.("root", {
-            message: error.message,
-            type: "server"
-        });
         return null;
 
     }

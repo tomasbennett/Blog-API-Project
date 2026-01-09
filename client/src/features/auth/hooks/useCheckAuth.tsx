@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHandler";
-import { accessTokenLocalStorageKey } from "../constants";
 import { NewAccessTokenRequest } from "../services/NewAccessTokenRequest";
 import { domain } from "../../../services/EnvironmentAPI";
+import { accessTokenLocalStorageKey } from "../../../constants/constants";
 
 export function useCheckAuth() {
     const [auth, setAuth] = useState<boolean | null>(null);

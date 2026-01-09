@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { LoadingCircle } from "../../../components/LoadingCircle";
 import { domain } from "../../../services/EnvironmentAPI";
-import { accessTokenLocalStorageKey } from "../constants";
 import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
 import { APIErrorSchema } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { notExpectedFormatError } from "../../../constants/constants";

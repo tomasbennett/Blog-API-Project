@@ -13,3 +13,7 @@ export const notExpectedFormatError: ICustomErrorResponse = {
     status: 0,
     message: "The returned data was not in the correct format!!!"
 }
+
+
+
+export const accessTokenLocalStorageKey: string = "accessToken";
