@@ -1,109 +1,86 @@
-// import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
-// // import "dotenv/config";
-// import dotenv from "dotenv";
-// dotenv.config({
-//     path: "../.env"
-// });
-// import bcrypt from "bcrypt";
+// import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({
+    path: "../.env"
+});
+import bcrypt from "bcrypt";
 
-// //AT THE END TEST IF YOU CAN IMPORT FROM THE SHARED FOLDER THROUGH A SEPARATE TSCONFIG.JSON FILE IN PRISMA FOLDER AND THEN ADD TO THE SEED COMMAND IN PACKAGE.JSON FILE
-// const prisma = new PrismaClient();
+//AT THE END TEST IF YOU CAN IMPORT FROM THE SHARED FOLDER THROUGH A SEPARATE TSCONFIG.JSON FILE IN PRISMA FOLDER AND THEN ADD TO THE SEED COMMAND IN PACKAGE.JSON FILE
+const prisma = new PrismaClient();
 
-// async function buildDefaultValues(): Promise<Prisma.UserCreateInput[]> {
-//     const saltRounds = process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10;
+async function buildDefaultValues(): Promise<Prisma.UserCreateInput[]> {
+    const saltRounds = process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10;
 
-//     const defaultAdminUser: Prisma.UserCreateInput = {
-//         username: 'admin',
-//         password: await bcrypt.hash(process.env.ADMIN_PASSWORD || "default_admin_password", saltRounds),
-//         rootFolder: {
-//             create: {
-//                 name: "root",
-//                 createdAt: new Date(),
-//                 subFolders: {
-//                     create: [
-//                         {
-//                             name: "admin folder 1",
-//                             createdAt: new Date(1995, 11, 17)
-//                         },
-//                         {
-//                             name: "admin folder 2",
-//                             createdAt: new Date(1995, 1, 13)
-//                         }
-//                     ]
-//                 }
-//             }
-//         }
-//     };
-
-
-//     const defaultGuestUser: Prisma.UserCreateInput = {
-//         username: 'guest',
-//         password: await bcrypt.hash(process.env.GUEST_PASSWORD || "default_guest_password", saltRounds),
-//         rootFolder: {
-//             create: {
-//                 name: "root",
-//                 createdAt: new Date(2026, 10, 24),
-//                 subFolders: {
-//                     create: [
-//                         {
-//                             name: "second folder down POGGERS",
-//                             createdAt: new Date(2027, 10, 24),
-//                         },
-//                         {
-//                             name: "another folder down",
-//                             createdAt: new Date(2028, 10, 24),
-//                             subFolders: {
-//                                 create: [
-//                                     {
-//                                         name: "third folder down BIG",
-//                                         createdAt: new Date(2029, 10, 24),
-//                                     }
-//                                 ]
-//                             }
-//                         }
-//                     ]
-//                 }
-//             }
-//         }
-//     };
-
-
-//     const defaultUsers: Prisma.UserCreateInput[] = [
-//         defaultAdminUser,
-//         defaultGuestUser
-//     ];
-
-//     return defaultUsers;
-// }
+    const defaultAdminUser: Prisma.UserCreateInput = {
+        username: 'admin',
+        password: await bcrypt.hash(process.env.ADMIN_PASSWORD || "default_admin_password", saltRounds),
+        blogs: {
+            createMany: {
+                data: [
+                    {
+                        title: "JavaScript Blog Tutorial",
+                        body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, odit blanditiis enim sit cupiditate, asperiores minima veritatis delectus nisi praesentium accusamus ab quasi. Commodi eveniet quo culpa corporis repellat accusamus, magni quos. Atque facilis, voluptas obcaecati ad harum asperiores reprehenderit, explicabo tempore, cupiditate magnam consequatur odit soluta voluptates quasi? Earum."
+                    },
+                    {
+                        title: "TypeScript Learning together",
+                        body: "This is a course in typescript that teaches users the importance of type safety when coding bigger projects like this one. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, odit blanditiis enim sit cupiditate, asperiores minima veritatis delectus nisi praesentium accusamus ab quasi. Commodi eveniet quo culpa corporis repellat accusamus, magni quos. Atque facilis, voluptas obcaecati ad harum asperiores reprehenderit, explicabo tempore, cupiditate magnam consequatur odit soluta voluptates quasi? Earum."
+                    },
+                    {
+                        title: "React, a js framework",
+                        body: "This is a react framework course that also uses tsx for type safety. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, odit blanditiis enim sit cupiditate, asperiores minima veritatis delectus nisi praesentium accusamus ab quasi. Commodi eveniet quo culpa corporis repellat accusamus, magni quos. Atque facilis, voluptas obcaecati ad harum asperiores reprehenderit, explicabo tempore, cupiditate magnam consequatur odit soluta voluptates quasi? Earum."
+                    },
+                    {
+                        title: "Express backend framework for Nodejs",
+                        body: "Want a backend framework that is literally only good for making apis, try express. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, odit blanditiis enim sit cupiditate, asperiores minima veritatis delectus nisi praesentium accusamus ab quasi. Commodi eveniet quo culpa corporis repellat accusamus, magni quos. Atque facilis, voluptas obcaecati ad harum asperiores reprehenderit, explicabo tempore, cupiditate magnam consequatur odit soluta voluptates quasi? Earum."
+                    },
+                    {
+                        title: "Making friends",
+                        body: "I won't be able to assist but I heard somewhere that touching grass is a good first step, best of luck to you on your journey. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente, odit blanditiis enim sit cupiditate, asperiores minima veritatis delectus nisi praesentium accusamus ab quasi. Commodi eveniet quo culpa corporis repellat accusamus, magni quos. Atque facilis, voluptas obcaecati ad harum asperiores reprehenderit, explicabo tempore, cupiditate magnam consequatur odit soluta voluptates quasi? Earum."
+                    }
+                ]
+            }
+        }
+    };
 
 
 
-// async function insertDefaultValues() {
-//     const defaultUsers = await buildDefaultValues();
 
-//     for (const userData of defaultUsers) {
-//         await prisma.user.create({
-//             data: userData
-//         });
-//     }
-// }
+    const defaultUsers: Prisma.UserCreateInput[] = [
+        defaultAdminUser
+    ];
+
+    return defaultUsers;
+}
 
 
 
-// async function main() {
-//     try {
-//         console.log('Seeding database with default values...');
-//         await insertDefaultValues();
-//         console.log('Database seeding completed.');
+async function insertDefaultValues() {
+    const defaultUsers = await buildDefaultValues();
+
+    for (const userData of defaultUsers) {
+        await prisma.user.create({
+            data: userData
+        });
+    }
+}
+
+
+
+async function main() {
+    try {
+        console.log('Seeding database with default values...');
+        await insertDefaultValues();
+        console.log('Database seeding completed.');
         
-//     } catch (error) {
-//         console.error('Error seeding database:', error);
+    } catch (error) {
+        console.error('Error seeding database:', error);
 
-//     } finally {
-//         await prisma.$disconnect();
+    } finally {
+        await prisma.$disconnect();
 
-//     }
-// }
+    }
+}
 
-// main();
+main();

@@ -36,6 +36,7 @@ model User {
   role     Role   @default(USER)
   
   refreshTokens RefreshToken[]
+  blogs   Blog[]
 }
 
 
@@ -47,6 +48,21 @@ model RefreshToken {
   createdAt DateTime @default(now())
   expiresAt DateTime
 }
+
+model Blog {
+  id    String  @id @default(uuid()) @db.Uuid
+  title   String
+  body    String
+
+
+  createdAt   DateTime  @default(now())
+
+  userId    String
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
+
 
 
 model Files {
