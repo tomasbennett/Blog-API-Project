@@ -5,9 +5,6 @@ import cors from "cors";
 import path from "path";
 import dotenv from "dotenv";
 
-import session from "express-session";
-import passport from "passport";
-
 
 import { router as apiRouter } from "./controllers/api";
 import { router as authRouter } from "./controllers/auth"
@@ -69,22 +66,25 @@ app.get(/.*/, (req: Request, res: Response, next: NextFunction) => {
 
 
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response<ICustomErrorResponse>, next: NextFunction) => {
   if (err instanceof Error) {
     const error: ICustomErrorResponse = {
       ok: false,
       status: 501,
       message: err.message + " : " + err.name
     }
+
+    return res.status(error.status).json(error);
+
   }
 
   const error: ICustomErrorResponse = {
     ok: false,
     status: 501,
-    message: "THE ERROR FINALLY TRIGGERED"
+    message: "An unknown error occurred on the backend!!!"
   }
   
-  return error;
+  return res.status(error.status).json(error);
 });
 
 

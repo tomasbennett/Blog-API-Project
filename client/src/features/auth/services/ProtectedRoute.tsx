@@ -6,7 +6,7 @@ import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/m
 import { APIErrorSchema } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { notExpectedFormatError } from "../../../constants/constants";
 import { ISignInError } from "../../../../../shared/features/auth/models/ILoginSchema";
-import { NewAccessTokenRequest } from "./NewAccessTokenRequest";
+import { NewAccessTokenRequest } from "../../../services/NewAccessTokenRequest";
 import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHandler";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 

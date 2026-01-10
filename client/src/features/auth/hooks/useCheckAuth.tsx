@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHandler";
-import { NewAccessTokenRequest } from "../services/NewAccessTokenRequest";
+import { NewAccessTokenRequest } from "../../../services/NewAccessTokenRequest";
 import { domain } from "../../../services/EnvironmentAPI";
 import { accessTokenLocalStorageKey } from "../../../constants/constants";
 

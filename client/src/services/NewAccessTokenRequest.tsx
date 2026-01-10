@@ -1,11 +1,11 @@
 import { NavigateFunction } from "react-router-dom";
-import { APIErrorSchema } from "../../../../../shared/features/api/models/APIErrorResponse";
-import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
-import { ISignInError } from "../../../../../shared/features/auth/models/ILoginSchema";
-import { accessTokenLocalStorageKey, notExpectedFormatError } from "../../../constants/constants";
-import { domain } from "../../../services/EnvironmentAPI";
-import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHandler";
-import { invalidRefreshTokenStatus } from "../../../../../shared/features/auth/constants";
+import { APIErrorSchema } from "../../../shared/features/api/models/APIErrorResponse";
+import { AccessTokenResponseSchema } from "../../../shared/features/auth/models/IAccessTokenResponse";
+import { ISignInError } from "../../../shared/features/auth/models/ILoginSchema";
+import { accessTokenLocalStorageKey, notExpectedFormatError } from "../constants/constants";
+import { domain } from "./EnvironmentAPI";
+import { SendToSignInErrorHandler } from "./SendToSignInErrorHandler";
+import { invalidRefreshTokenStatus } from "../../../shared/features/auth/constants";
 
 export async function NewAccessTokenRequest(
     navigate: NavigateFunction

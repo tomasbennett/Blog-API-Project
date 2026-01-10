@@ -3,7 +3,9 @@ import { NavigateFunction } from "react-router-dom";
 import { FieldValues, UseFormSetError } from "react-hook-form";
 import { ICustomErrorResponse, APIErrorSchema } from "../../../shared/features/api/models/APIErrorResponse";
 import { ISignInError } from "../../../shared/features/auth/models/ILoginSchema";
-import { jsonParsingError } from "../constants/constants";
+import { accessTokenLocalStorageKey, jsonParsingError } from "../constants/constants";
+import { NewAccessTokenRequest } from "./NewAccessTokenRequest";
+import { GetAccessToken } from "./GetAccessToken";
 
 export async function basicResponseHandle<T extends FieldValues>(
     url: string,
@@ -12,7 +14,20 @@ export async function basicResponseHandle<T extends FieldValues>(
     setIsError: React.Dispatch<React.SetStateAction<ICustomErrorResponse | null>>,
 ): Promise<Response | null> {
     try {
-        const response = await fetch(url, fetchOptions);
+
+        const accessToken = await GetAccessToken(navigate);
+        if (!accessToken) return null;
+
+        const authFetchOptions: RequestInit = {
+            ...fetchOptions,
+            headers: {
+                ...fetchOptions?.headers,
+                Authorization: `Bearer ${accessToken}`
+            }
+        }
+
+
+        const response = await fetch(url, authFetchOptions);
 
         if (response.status >= 500 && response.status <= 599) {
 
