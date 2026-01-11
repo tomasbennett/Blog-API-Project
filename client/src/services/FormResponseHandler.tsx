@@ -6,13 +6,13 @@ import { ISignInError } from "../../../shared/features/auth/models/ILoginSchema"
 import { accessTokenLocalStorageKey, jsonParsingError } from "../constants/constants";
 import { NewAccessTokenRequest } from "./NewAccessTokenRequest";
 import { GetAccessToken } from "./GetAccessToken";
+import { IResponseTypes } from "../models/IResponseTypes";
 
-export async function basicResponseHandle(
+export async function formResponseHandler(
     url: string,
     fetchOptions: RequestInit,
-    navigate: NavigateFunction,
-    setIsError: React.Dispatch<React.SetStateAction<ICustomErrorResponse | null>>,
-): Promise<Response | null> {
+    navigate: NavigateFunction
+): Promise<IResponseTypes | null> {
     try {
 
         const accessToken = await GetAccessToken(navigate);
@@ -48,8 +48,7 @@ export async function basicResponseHandle(
 
             } catch (err) {
                 console.error("Error parsing server error response:", err);
-                setIsError(jsonParsingError);
-                return null;
+                return { type: "customError", error: jsonParsingError };
 
             }
 
@@ -80,7 +79,10 @@ export async function basicResponseHandle(
 
         }
 
-        return response;
+        return {
+            type: "response",
+            data: response
+        };
 
 
 
@@ -117,8 +119,10 @@ export async function basicResponseHandle(
             status: 0,
             message: error.message
         };
-        setIsError(customError);
-        return null;
+        return {
+            type: "customError",
+            error: customError
+        };
 
     }
 }
