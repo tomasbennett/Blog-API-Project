@@ -9,6 +9,8 @@ import dotenv from "dotenv";
 import { router as apiRouter } from "./controllers/api";
 import { router as authRouter } from "./controllers/auth"
 import { router as signInRouter } from "./controllers/sign-in";
+import { router as uploadRouter } from "./controllers/upload";
+
 
 
 import { environment } from "../../shared/constants";
@@ -54,7 +56,7 @@ app.use(cookieParser());
 
 
 
-app.use("/api", apiRouter, authRouter, signInRouter);
+app.use("/api", apiRouter, authRouter, signInRouter, uploadRouter);
 
 
 app.get(/.*/, (req: Request, res: Response, next: NextFunction) => {
