@@ -48,7 +48,7 @@ router.post("/files/upload", ensureAuthentication, upload.single("file"), async 
         const storagePath = `${crypto.randomUUID()}.${fileExt}`;
         
         const { error } = await supabase.storage
-            .from(process.env.SUPABASE_STORAGE_BUCKET_NAME || "uploads")
+            .from(process.env.SUPABASE_BUCKET_NAME || "uploads")
             .upload(storagePath, buffer, {
                     contentType: mimetype,
                     upsert: false

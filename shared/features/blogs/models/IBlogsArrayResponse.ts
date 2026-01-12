@@ -2,16 +2,23 @@ import z from "zod";
 import { APISuccessSchema } from "../../api/models/APISuccessResponse";
 import { DateFromStringSchema } from "../../util/models/IDateFromStringSchema";
 import { usernamePasswordSchema } from "../../auth/models/ILoginSchema";
+import { usernamePasswordRegex } from "../../auth/constants";
 
 
 export const BlogSchema = z.object({
     id: z.string({ message: "Blog should have a string Id!!!" }),
     title: z.string({ message: "Blog title should be of type string!!! "})
         .min(1, { message: "Blog titles should have a minimum length of 1!!!" })
-        .max(50, { message: "Blog titles should have a maximum character length of 50" }),
+        .max(50, { message: "Blog titles should have a maximum character length of 50" })
+        .regex(usernamePasswordRegex, {
+            message: "Can only contain letters, numbers, exclamation points or underscores."
+        }),
     body: z.string({ message: "Blog body messages should be of type string" })
         .min(1, { message: "Blog bodies should have a minimum length of 1!!!" })
-        .max(300, { message: "Blog titles should have a maximum character length of 300" }),
+        .max(600, { message: "Blog titles should have a maximum character length of 300" })
+        .regex(usernamePasswordRegex, {
+            message: "Can only contain letters, numbers, exclamation points or underscores."
+        }),
     createdAt: DateFromStringSchema,
     username: usernamePasswordSchema,
 

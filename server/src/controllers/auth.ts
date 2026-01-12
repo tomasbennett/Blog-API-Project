@@ -67,6 +67,14 @@ router.get("/auth/refreshToken", async (req: Request, res: Response<ICustomError
         }
 
         if (dbRefreshToken.expiresAt.getTime() < Date.now()) {
+            const delRefreshToken = await prisma.refreshToken.delete({
+                where: {
+                    id: dbRefreshToken.id
+                }
+            });
+
+            
+
             return res.status(invalidRefreshTokenStatus).json({
                 ok: false,
                 status: invalidRefreshTokenStatus,

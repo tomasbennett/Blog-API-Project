@@ -23,8 +23,7 @@ export function PostBlogPageLayout() {
         handleSubmit,
         formState: { errors },
         clearErrors,
-        reset,
-        watch
+        reset
     } = useForm<INewBlogReq>({
         resolver: zodResolver(NewBlogReqSchema),
         mode: "onSubmit",
@@ -43,13 +42,19 @@ export function PostBlogPageLayout() {
         if (!file) return;
 
         const formData = new FormData();
-        formData.append("blogImgFile", file);
+        formData.append("file", file);
         formData.append("title", data.title);
         formData.append("body", data.body);
+
+        // for (const [key, val] of formData) {
+        //     console.log(key, val);
+        // }
 
         try {
             clearErrors()
             setIsLoading(true);
+
+            console.log("RESPONSE RUNNING!!!");
 
             const response = await formResponseHandler(
                 `${domain}/api/files/upload`,
@@ -60,50 +65,54 @@ export function PostBlogPageLayout() {
                 navigate
             );
 
-            if (!response) {
-                return;
-            }
+            console.dir(response);
 
-            if (response.type === "customError") {
-                setError("root", {
-                    message: response.error.message,
-                    type: "server"
-                });
-                return;
-            }
+            // if (!response) {
+            //     console.log("NO RESPONSE GIVEN!!!");
+            //     return;
+            // }
 
-
-
-
-
-            const serverResponse = response.data;
-            if (serverResponse.ok) {
-                reset();
-                navigate("/");
-                return;
-            }
+            // if (response.type === "customError") {
+            //     setError("root", {
+            //         message: response.error.message,
+            //         type: "server"
+            //     });
+            //     return;
+            // }
 
 
 
 
 
-            const serverJson = await serverResponse.json();
-
-            const errorResult = APIErrorSchema.safeParse(serverJson);
-            if (errorResult.success) {
-                setError("root", {
-                    message: errorResult.data.message,
-                    type: "server"
-                });
-                return;
-            }
+            // const serverResponse = response.data;
+            // if (serverResponse.ok) {
+            //     // reset();
+            //     // navigate("/");
+            //     console.log("IT WORKED BUT SOMETHING MIGHT BE WRONG BACKEND???");
+            //     return;
+            // }
 
 
-            setError("root", {
-                message: notExpectedFormatError.message,
-                type: "server"
-            });
-            return;
+
+
+
+            // const serverJson = await serverResponse.json();
+
+            // const errorResult = APIErrorSchema.safeParse(serverJson);
+            // if (errorResult.success) {
+            //     setError("root", {
+            //         message: errorResult.data.message,
+            //         type: "server"
+            //     });
+            //     return;
+            // }
+
+
+            // setError("root", {
+            //     message: notExpectedFormatError.message,
+            //     type: "server"
+            // });
+            // return;
 
 
 
@@ -125,14 +134,7 @@ export function PostBlogPageLayout() {
         }
     }
 
-    const watchedFile = watch("blogImgFile");
 
-    useEffect(() => {
-        console.log("RHF watch(file):", watchedFile);
-        console.log("Type:", typeof watchedFile);
-        console.log("instanceof FileList:", watchedFile instanceof FileList);
-        console.log("Array.isArray:", Array.isArray(watchedFile));
-    }, [watchedFile]);
 
 
 
