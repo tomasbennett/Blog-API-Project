@@ -1,20 +1,20 @@
 import { useForm } from "react-hook-form";
 import styles from "./PostBlogPageLayout.module.css";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { INewBlogReq, NewBlogReqSchema } from "../../../../../shared/features/blogs/models/INewBlogRequest";
+import { INewBlogReq, NewBlogReqSchema } from "../../../../../shared/features/blogs/models/INewBlogClientRequest";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { domain } from "../../../services/EnvironmentAPI";
 import { formResponseHandler } from "../../../services/FormResponseHandler";
-import { notExpectedFormatError } from "../../../constants/constants";
+import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
+import { LoadingCircle } from "../../../components/LoadingCircle";
 
 
 export function PostBlogPageLayout() {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [isError, setIsError] = useState<ICustomErrorResponse | null>(null);
 
 
     const {
@@ -23,7 +23,8 @@ export function PostBlogPageLayout() {
         handleSubmit,
         formState: { errors },
         clearErrors,
-        reset
+        reset,
+        watch
     } = useForm<INewBlogReq>({
         resolver: zodResolver(NewBlogReqSchema),
         mode: "onSubmit",
@@ -36,9 +37,11 @@ export function PostBlogPageLayout() {
 
     const onSubmit = async (data: INewBlogReq) => {
 
+        console.log("ONSUBMIT RUNNING!!!");
+
         const file = data.blogImgFile?.[0];
         if (!file) return;
-        
+
         const formData = new FormData();
         formData.append("blogImgFile", file);
         formData.append("title", data.title);
@@ -47,7 +50,6 @@ export function PostBlogPageLayout() {
         try {
             clearErrors()
             setIsLoading(true);
-            setIsError(null);
 
             const response = await formResponseHandler(
                 `${domain}/api/files/upload`,
@@ -110,7 +112,11 @@ export function PostBlogPageLayout() {
 
         } catch (error) {
 
-
+            setError("root", {
+                message: jsonParsingError.message,
+                type: "server"
+            });
+            return;
 
 
         } finally {
@@ -119,6 +125,14 @@ export function PostBlogPageLayout() {
         }
     }
 
+    const watchedFile = watch("blogImgFile");
+
+    useEffect(() => {
+        console.log("RHF watch(file):", watchedFile);
+        console.log("Type:", typeof watchedFile);
+        console.log("instanceof FileList:", watchedFile instanceof FileList);
+        console.log("Array.isArray:", Array.isArray(watchedFile));
+    }, [watchedFile]);
 
 
 
@@ -129,21 +143,74 @@ export function PostBlogPageLayout() {
 
                 <form onSubmit={handleSubmit(onSubmit)}>
 
+                    {
+                        errors.root?.message &&
+                        <p className={styles.error}>
+                            {errors.root?.message}
+                        </p>
+                    }
+
+                    {
+                        errors.blogImgFile?.message &&
+                        <p className={styles.error}>
+                            {errors.blogImgFile?.message}
+                        </p>
+                    }
+
                     <div>
                         <label htmlFor="image">Blog cover image</label>
-                        <input {...register("blogImgFile")} type="file" name="image" id="image" />
+                        <input
+                            {...register("blogImgFile")}
+                            type="file"
+                            id="image"
+                        />
                     </div>
+
+                    {
+                        errors.title?.message &&
+                        <p className={styles.error}>
+                            {errors.title?.message}
+                        </p>
+                    }
 
 
                     <div>
                         <label htmlFor="title">Blog title</label>
-                        <input {...register("title")} type="text" name="title" id="title" />
+                        <input
+                            {...register("title")}
+                            type="text"
+                            id="title"
+                        />
                     </div>
+
+
+
+                    {
+                        errors.body?.message &&
+                        <p className={styles.error}>
+                            {errors.body?.message}
+                        </p>
+                    }
+
 
                     <div>
                         <label htmlFor="body">Blog body</label>
-                        <textarea {...register("body")} name="body" id="body"></textarea>
+                        <textarea
+                            {...register("body")}
+                            id="body"
+                        ></textarea>
                     </div>
+
+                    <button type="submit">
+                        {
+                            isLoading ?
+                                <LoadingCircle height="80%" />
+
+                                :
+
+                                "Submit"
+                        }
+                    </button>
 
                 </form>
 

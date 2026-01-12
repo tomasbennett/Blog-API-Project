@@ -15,7 +15,8 @@ router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<IC
                     select: {
                         username: true
                     }
-                }
+                },
+                blogImgFile: true
             }
         });
 
@@ -40,7 +41,8 @@ router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<IC
                     title: blog.title,
                     body: blog.body,
                     createdAt: blog.createdAt,
-                    username: blog.user.username
+                    username: blog.user.username,
+                    supabaseFileImgId: blog.blogImgFile.supabaseFileId,
                 }
             })
         }

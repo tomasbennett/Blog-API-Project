@@ -5,9 +5,9 @@ import { SignInLayout } from './features/auth/layouts/SignInLayout'
 import { NotAuthenticatedRoute, ProtectedRoute } from './features/auth/services/ProtectedRoute'
 import { ErrorElement } from './features/error/services/ErrorElement'
 import { ErrorPageLayout } from './features/error/layouts/ErrorLayout'
-import { HeaderNavBar } from './components/HeaderNavBar'
 import { ContentPagesLayout } from './layouts/ContentPagesLayout'
 import { MainHomePage } from './features/blogs/layouts/MainHomePage'
+import { PostBlogPageLayout } from './features/posts/layouts/PostBlogPageLayout'
 
 
 const router = createBrowserRouter([
@@ -68,6 +68,10 @@ const router = createBrowserRouter([
               {
                 path: "contacts",
                 element: <p>CONTACTS PAGE</p>
+              },
+              {
+                path: "post",
+                element: <PostBlogPageLayout />
               }
             ]
           },
