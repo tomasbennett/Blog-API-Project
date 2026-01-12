@@ -3,6 +3,8 @@ import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErr
 import { ensureAuthentication } from "../auth/ensureAuthentication";
 import { prisma } from "../db/prisma";
 import { IBlogsArrayResponse } from "../../../shared/features/blogs/models/IBlogsArrayResponse";
+import { ICustomSuccessMessage } from "../../../shared/features/api/models/APISuccessResponse";
+import { deleteSupaBaseFile } from "../services/DeleteFileSupabase";
 
 export const router = Router();
 
@@ -54,5 +56,66 @@ router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<IC
         return next(error);
 
     }
+
+});
+
+
+router.delete("/blog/:blogId", ensureAuthentication, async (req: Request<{ blogId: string }>, res: Response<ICustomErrorResponse>, next: NextFunction) => {
+    const { blogId } = req.params;
+    const user = req.user!;
+
+
+    try {
+        const blogToDelete = await prisma.blog.findUnique({
+            where: {
+                id: blogId
+            },
+            include: {
+                blogImgFile: true,
+                user: true
+            }
+        });
+
+
+        if (!blogToDelete) {
+            const blogNotFoundError: ICustomErrorResponse = {
+                ok: false,
+                status: 400,
+                message: "Blog to delete not found!!!"
+            }
+            return res.status(blogNotFoundError.status).json(blogNotFoundError);
+        }
+
+
+        if (blogToDelete.userId !== user.id) {
+            const forbiddenError: ICustomErrorResponse = {
+                ok: false,
+                status: 403,
+                message: "You are not authorized to delete this blog as you are not signed in as the user who posted it!!!"
+            }
+
+            return res.status(forbiddenError.status).json(forbiddenError);
+        }
+
+
+        //SHOULD WORK BECAUSE OF ONDELETE CASCADE FROM DELETING A FILE
+        const deleteBlogAndFile = await deleteSupaBaseFile(blogToDelete.blogImgFileId);
+
+        if (!(deleteBlogAndFile.ok)) {
+            return res.status(deleteBlogAndFile.status).json(deleteBlogAndFile);
+        }
+
+        return res.sendStatus(204);
+
+
+
+
+        
+    } catch (error) {
+        next(error);
+
+
+    }
+
 
 });
