@@ -74,7 +74,7 @@ export function MainHomePage() {
 
         getBlogs();
 
-    });
+    }, []);
 
 
     useEffect(() => {
