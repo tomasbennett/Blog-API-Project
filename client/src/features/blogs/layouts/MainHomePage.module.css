@@ -21,7 +21,7 @@
 }
 
 .outerContainer > *{
-    background-color: rgb(247, 247, 247);
+    background-color: var(--soft-light-colour);
 }
 
 

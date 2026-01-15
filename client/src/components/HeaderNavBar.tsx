@@ -84,7 +84,7 @@ export function HeaderNavBar() {
 
                     <PostsIcon />
 
-                    Blog Project
+                    Blog
 
 
                 </div>

@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "Nunito";
-  src: url("../public/fonts/Nunito/Nunito-VariableFont_wght.ttf") format("truetype");
+  font-family: "Roboto";
+  src: url("../public/fonts/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -12,11 +12,11 @@
   font-size: 62.5%;
 
   --soft-light-colour: #e0e0e0;
-  --dark-container-colour: rgb(20, 20, 20);
+  /* --dark-container-colour: rgb(20, 20, 20);
   --dark-consistent-bg-header-colour: rgb(29, 29, 29);
 
   --blue-button-colour: rgb(0, 89, 255);
-  --hover-button-colour: rgb(0, 65, 185);
+  --hover-button-colour: rgb(0, 65, 185); */
 }
 
 *,
@@ -38,7 +38,7 @@
 
 html,
 body {
-  font-family: "Nunito", "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Roboto", "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   font-size-adjust: 0.5;
   position: relative;
 
