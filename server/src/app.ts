@@ -10,6 +10,7 @@ import { router as apiRouter } from "./controllers/api";
 import { router as authRouter } from "./controllers/auth"
 import { router as signInRouter } from "./controllers/sign-in";
 import { router as uploadRouter } from "./controllers/upload";
+import { router as downloadRouter } from "./controllers/downloads";
 
 
 
@@ -56,7 +57,7 @@ app.use(cookieParser());
 
 
 
-app.use("/api", apiRouter, authRouter, signInRouter, uploadRouter);
+app.use("/api", apiRouter, authRouter, signInRouter, uploadRouter, downloadRouter);
 
 
 app.get(/.*/, (req: Request, res: Response, next: NextFunction) => {

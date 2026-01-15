@@ -17,3 +17,9 @@ export const notExpectedFormatError: ICustomErrorResponse = {
 
 
 export const accessTokenLocalStorageKey: string = "accessToken";
+
+
+
+export const thinScreenMaxWidth: string = "";
+export const mediumScreenMaxWidth: string = "";
+export const wideScreenMINWidth: string = mediumScreenMaxWidth;

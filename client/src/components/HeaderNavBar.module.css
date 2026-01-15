@@ -13,8 +13,8 @@
 
     background-color: var(--soft-light-colour);
 
-    color: black;
-    fill: black;
+    color: var(--dark-container-colour);
+    fill: var(--dark-container-colour);
 
     padding: 0 2rem;
 
@@ -179,7 +179,7 @@ ul.pageSelectionContainer {
 
 .signInOrOutContainer:hover {
     /* background-color: rgba(255, 255, 255, 0.2); */
-    background-color: black;
+    background-color: var(--dark-container-colour);
 
     fill: white;
 

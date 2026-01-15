@@ -95,51 +95,46 @@ export const router = Router();
 
 
 
-// router.get("/inline-file/:shareNodeId", ensureAuthentication, async (req: Request<{ shareNodeId: string }>, res: Response, next: NextFunction) => {
-//     try {
-//         const { shareNodeId } = req.params;
+router.get("/inline-file/:blogId", async (req: Request<{ blogId: string }>, res: Response, next: NextFunction) => {
+    try {
+        const { blogId } = req.params;
     
-//         const sharedNode = await prisma.sharedNode.findUnique({
-//             where: {
-//                 id: shareNodeId,
-//                 fileId: {
-//                     not: null
-//                 }
-//             },
-//             include: {
-//                 file: true,
-//             }
-//         });
+        const blog = await prisma.blog.findUnique({
+            where: {
+                id: blogId
+            },
+            include: {
+                blogImgFile: true
+            }
+        });
     
 
-//         if (!sharedNode) {
-//             return res.status(404).send("Shared node not found!!!");
-//         }
+        if (!blog) {
+            return res.status(404).send("Blog not found!!!");
+        }
     
 
-//         const file = sharedNode.file;
+        const file = blog.blogImgFile;
     
-//         const supabaseFile = await fetchSupaBaseFile(file!.supabaseFileId);
+        const supabaseFile = await fetchSupaBaseFile(file.supabaseFileId);
     
-
-//         const errorResultFile = APIErrorSchema.safeParse(supabaseFile);
-//         if (errorResultFile.success) {
-//             return res.status(404).send("File not found in storage: " + errorResultFile.data.message);
-//         }
+        if (!supabaseFile.ok) {
+            return res.status(404).send("File not found in storage: " + supabaseFile.message);
+        }
         
     
-//         const arrayBuffer = await (supabaseFile as Blob).arrayBuffer();
-//         const buffer = Buffer.from(arrayBuffer);
+        const arrayBuffer = await (supabaseFile.blob as Blob).arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
     
     
-//         const fileBuffer = buffer;
-//         res.setHeader("Content-Type", (supabaseFile as Blob).type);
-//         res.setHeader("Content-Length", buffer.length.toString());
-//         res.setHeader("Content-Disposition", `inline; filename="${file!.filename}"`);
-//         res.send(fileBuffer);
+        const fileBuffer = buffer;
+        res.setHeader("Content-Type", (supabaseFile.blob as Blob).type);
+        res.setHeader("Content-Length", buffer.length.toString());
+        res.setHeader("Content-Disposition", `inline; filename="${file.filename}"`);
+        res.send(fileBuffer);
         
-//     } catch (error) {
-//         next(error);
+    } catch (error) {
+        next(error);
         
-//     }
-// });
+    }
+});

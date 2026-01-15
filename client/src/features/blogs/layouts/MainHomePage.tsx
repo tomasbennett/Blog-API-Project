@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./MainHomePage.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BlogsArrayResponseSchema, IBlog } from "../../../../../shared/features/blogs/models/IBlogsArrayResponse";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { domain } from "../../../services/EnvironmentAPI";
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
+import { SidebarBlog } from "../components/SidebarBlog";
 
 
 export function MainHomePage() {
@@ -84,6 +85,15 @@ export function MainHomePage() {
     }, [allBlogsArr]);
 
 
+    const blogsLength: number = useMemo(() => {
+        if (allBlogsArr) {
+            return allBlogsArr.length;
+        }
+
+        return 0;
+    }, [allBlogsArr]);
+
+
     return (
         <>
         
@@ -107,12 +117,25 @@ export function MainHomePage() {
 
 
 
-
                 </div>
 
                 <div className={styles.blogListScrollerSection}>
 
+                    {
+                        blogsLength > 0 ?
 
+                            allBlogsArr!.map((blog, indx) => {
+
+                                return (
+                                    <SidebarBlog blog={blog} key={blog.id} />
+                                )
+                            })
+
+
+                        :
+
+                        <p>There are no blogs currently</p>
+                    }
 
                 </div>
 

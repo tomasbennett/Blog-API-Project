@@ -12,10 +12,12 @@
   font-size: 62.5%;
 
   --soft-light-colour: #e0e0e0;
-  /* --dark-container-colour: rgb(20, 20, 20);
-  --dark-consistent-bg-header-colour: rgb(29, 29, 29);
+  --dark-container-colour: rgb(20, 20, 20);
 
-  --blue-button-colour: rgb(0, 89, 255);
+  --blue-selected-button-colour: rgb(0, 178, 190);
+  /* --dark-consistent-bg-header-colour: rgb(29, 29, 29); */
+
+  /* --blue-button-colour: rgb(0, 89, 255);
   --hover-button-colour: rgb(0, 65, 185); */
 }
 
