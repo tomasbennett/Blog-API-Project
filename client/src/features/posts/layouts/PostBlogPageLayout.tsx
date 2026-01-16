@@ -46,10 +46,6 @@ export function PostBlogPageLayout() {
         formData.append("title", data.title);
         formData.append("body", data.body);
 
-        // for (const [key, val] of formData) {
-        //     console.log(key, val);
-        // }
-
         try {
             clearErrors()
             setIsLoading(true);
@@ -67,52 +63,52 @@ export function PostBlogPageLayout() {
 
             console.dir(response);
 
-            // if (!response) {
-            //     console.log("NO RESPONSE GIVEN!!!");
-            //     return;
-            // }
+            if (!response) {
+                console.log("NO RESPONSE GIVEN!!!");
+                return;
+            }
 
-            // if (response.type === "customError") {
-            //     setError("root", {
-            //         message: response.error.message,
-            //         type: "server"
-            //     });
-            //     return;
-            // }
-
-
-
-
-
-            // const serverResponse = response.data;
-            // if (serverResponse.ok) {
-            //     // reset();
-            //     // navigate("/");
-            //     console.log("IT WORKED BUT SOMETHING MIGHT BE WRONG BACKEND???");
-            //     return;
-            // }
+            if (response.type === "customError") {
+                setError("root", {
+                    message: response.error.message,
+                    type: "server"
+                });
+                return;
+            }
 
 
 
 
 
-            // const serverJson = await serverResponse.json();
-
-            // const errorResult = APIErrorSchema.safeParse(serverJson);
-            // if (errorResult.success) {
-            //     setError("root", {
-            //         message: errorResult.data.message,
-            //         type: "server"
-            //     });
-            //     return;
-            // }
+            const serverResponse = response.data;
+            if (serverResponse.ok) {
+                reset();
+                navigate("/");
+                console.log("IT WORKED BUT SOMETHING MIGHT BE WRONG BACKEND???");
+                return;
+            }
 
 
-            // setError("root", {
-            //     message: notExpectedFormatError.message,
-            //     type: "server"
-            // });
-            // return;
+
+
+
+            const serverJson = await serverResponse.json();
+
+            const errorResult = APIErrorSchema.safeParse(serverJson);
+            if (errorResult.success) {
+                setError("root", {
+                    message: errorResult.data.message,
+                    type: "server"
+                });
+                return;
+            }
+
+
+            setError("root", {
+                message: notExpectedFormatError.message,
+                type: "server"
+            });
+            return;
 
 
 
@@ -155,7 +151,7 @@ export function PostBlogPageLayout() {
                     {
                         errors.blogImgFile?.message &&
                         <p className={styles.error}>
-                            {errors.blogImgFile?.message}
+                            {errors.blogImgFile.message}
                         </p>
                     }
 
@@ -171,7 +167,7 @@ export function PostBlogPageLayout() {
                     {
                         errors.title?.message &&
                         <p className={styles.error}>
-                            {errors.title?.message}
+                            {errors.title.message}
                         </p>
                     }
 
@@ -190,7 +186,7 @@ export function PostBlogPageLayout() {
                     {
                         errors.body?.message &&
                         <p className={styles.error}>
-                            {errors.body?.message}
+                            {errors.body.message}
                         </p>
                     }
 

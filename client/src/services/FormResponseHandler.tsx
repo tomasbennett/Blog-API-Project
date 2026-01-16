@@ -13,10 +13,32 @@ export async function formResponseHandler(
     fetchOptions: RequestInit,
     navigate: NavigateFunction
 ): Promise<IResponseTypes | null> {
+    const accessToken = await GetAccessToken(navigate);
+    if (!accessToken) return null;
+
+    const res = await FetchHandlerHelper(
+        url,
+        fetchOptions,
+        navigate,
+        accessToken
+    );
+
+
+    return res;
+
+}
+
+
+
+async function FetchHandlerHelper(
+    url: string,
+    fetchOptions: RequestInit,
+    navigate: NavigateFunction,
+    accessToken: string,
+    hasRetried: boolean = false
+): Promise<IResponseTypes | null> {
     try {
 
-        const accessToken = await GetAccessToken(navigate);
-        if (!accessToken) return null;
 
         const authFetchOptions: RequestInit = {
             ...fetchOptions,
@@ -63,7 +85,29 @@ export async function formResponseHandler(
         }
 
         if (response.status === 401) {
-            console.log("DATA SENT CORRECTLY FROM ERROR HANDLER!!!")
+            console.log("DATA SENT CORRECTLY FROM ERROR HANDLER!!!");
+
+            if (!hasRetried) {
+
+                const newAccessToken = await NewAccessTokenRequest(navigate);
+                if (!newAccessToken) return null;
+
+                const res = await FetchHandlerHelper(
+                    url,
+                    fetchOptions,
+                    navigate,
+                    newAccessToken,
+                    true
+                );
+
+                return res;
+
+            }
+
+
+
+
+
             const signInError: ISignInError = {
                 message: "You were logged out!!!",
                 inputType: "root"

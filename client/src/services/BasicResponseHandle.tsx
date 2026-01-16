@@ -13,10 +13,35 @@ export async function basicResponseHandle(
     navigate: NavigateFunction,
     setIsError: React.Dispatch<React.SetStateAction<ICustomErrorResponse | null>>,
 ): Promise<Response | null> {
+    const accessToken = await GetAccessToken(navigate);
+    if (!accessToken) return null;
+
+
+    const res = await FetchHandlerHelper(
+        url,
+        fetchOptions,
+        navigate,
+        accessToken,
+        setIsError
+    );
+
+
+    return res;
+
+}
+
+
+
+async function FetchHandlerHelper(
+    url: string,
+    fetchOptions: RequestInit,
+    navigate: NavigateFunction,
+    accessToken: string,
+    setIsError: React.Dispatch<React.SetStateAction<ICustomErrorResponse | null>>,
+    hasRetried: boolean = false
+): Promise<Response | null> {
     try {
 
-        const accessToken = await GetAccessToken(navigate);
-        if (!accessToken) return null;
 
         const authFetchOptions: RequestInit = {
             ...fetchOptions,
@@ -64,7 +89,27 @@ export async function basicResponseHandle(
         }
 
         if (response.status === 401) {
-            console.log("DATA SENT CORRECTLY FROM ERROR HANDLER!!!")
+            console.log("DATA SENT CORRECTLY FROM ERROR HANDLER!!!");
+
+            if (!hasRetried) {
+                const newAccessToken = NewAccessTokenRequest(navigate);
+                if (!newAccessToken) return null;
+
+                const res = await FetchHandlerHelper(
+                    url,
+                    fetchOptions,
+                    navigate,
+                    accessToken,
+                    setIsError,
+                    true
+                );
+
+                return res
+
+            }
+
+
+
             const signInError: ISignInError = {
                 message: "You were logged out!!!",
                 inputType: "root"
