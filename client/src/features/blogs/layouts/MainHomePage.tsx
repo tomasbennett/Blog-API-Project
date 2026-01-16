@@ -7,6 +7,7 @@ import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { domain } from "../../../services/EnvironmentAPI";
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
 import { SidebarBlog } from "../components/SidebarBlog";
+import { MainBlog } from "../components/MainBlog";
 
 
 export function MainHomePage() {
@@ -46,6 +47,7 @@ export function MainHomePage() {
                 const blogsResult = BlogsArrayResponseSchema.safeParse(blogsJson);
                 if (blogsResult.success) {
                     setAllBlogsArr(blogsResult.data.blogs);
+                    setCurrBlog(blogsResult.data.blogs[0]);
                     return;
 
                 }
@@ -94,6 +96,8 @@ export function MainHomePage() {
     }, [allBlogsArr]);
 
 
+
+
     return (
         <>
         
@@ -114,6 +118,19 @@ export function MainHomePage() {
 
 
                 <div className={styles.currBlogSection}>
+
+                    {
+                        currBlog ?
+
+                            <MainBlog blog={currBlog} />
+
+                        :
+
+                            <p>
+                                There are no blogs currently available
+                            </p>
+                    }
+
 
 
 

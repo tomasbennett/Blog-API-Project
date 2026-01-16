@@ -1,4 +1,7 @@
 .outerContainer{
+    --padding-content-text: 1rem 1rem;
+
+
     flex: 1 1 0;
 
     padding: 1.5rem;
@@ -30,6 +33,8 @@
 .introContainer{
     grid-area: header;
 
+    padding: var(--padding-content-text);
+
 
     
     & > h2{
@@ -51,6 +56,7 @@
 
 .currBlogSection{
     grid-area: main;
+
 }
 
 
