@@ -3,7 +3,7 @@ import styles from "./PostBlogPageLayout.module.css";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { INewBlogReq, NewBlogReqSchema } from "../../../../../shared/features/blogs/models/INewBlogClientRequest";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { domain } from "../../../services/EnvironmentAPI";
@@ -33,8 +33,21 @@ export function PostBlogPageLayout() {
 
     const navigate = useNavigate();
 
+    const abortControllerRef = useRef<AbortController | null>(null);
+
+    useEffect(() => {
+
+        return () => {
+            abortControllerRef.current?.abort();
+        }
+    }, []);
 
     const onSubmit = async (data: INewBlogReq) => {
+
+        abortControllerRef.current?.abort();
+        abortControllerRef.current = new AbortController();
+
+
 
         console.log("ONSUBMIT RUNNING!!!");
 
