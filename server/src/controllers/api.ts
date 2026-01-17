@@ -2,7 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
 import { ensureAuthentication } from "../auth/ensureAuthentication";
 import { prisma } from "../db/prisma";
-import { IBlogsArrayResponse } from "../../../shared/features/blogs/models/IBlogsArrayResponse";
+import { IBlogsArrayResponse, ISingleBlogResponse } from "../../../shared/features/blogs/models/IBlogsArrayResponse";
 import { ICustomSuccessMessage } from "../../../shared/features/api/models/APISuccessResponse";
 import { deleteSupaBaseFile } from "../services/DeleteFileSupabase";
 
@@ -58,6 +58,53 @@ router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<IC
     }
 
 });
+
+router.get("/blogs/:blogId", ensureAuthentication, async (req: Request<{ blogId: string }>, res: Response<ICustomErrorResponse | ISingleBlogResponse>, next: NextFunction) => {
+    const { blogId } = req.params;
+
+    const blog = await prisma.blog.findUnique({
+        where: {
+            id: blogId
+        },
+        include: {
+            user: true,
+            blogImgFile: true
+        }
+    });
+
+    if (!blog) {
+        const noBlogFound: ICustomErrorResponse = {
+            ok: false,
+            status: 400,
+            message: "No blog found with the blog Id passed into the server!!!"
+        }
+
+        return res.status(noBlogFound.status).json(noBlogFound);
+    }
+
+
+    const blogResponse: ISingleBlogResponse = {
+        ok: true,
+        status: 200,
+        message: "Successfully found the blog!!!",
+        blog: {
+            id: blog.id,
+            title: blog.title,
+            body: blog.body,
+            createdAt: blog.createdAt,
+            supabaseFileImgId: blog.blogImgFile.supabaseFileId,
+            username: blog.user.username,
+        }
+    }
+
+    return res.status(blogResponse.status).json(blogResponse);
+
+
+
+
+});
+
+
 
 
 router.delete("/blog/:blogId", ensureAuthentication, async (req: Request<{ blogId: string }>, res: Response<ICustomErrorResponse>, next: NextFunction) => {

@@ -37,3 +37,14 @@ export const BlogsArrayResponseSchema = APISuccessSchema.extend({
 });
 
 export type IBlogsArrayResponse = z.infer<typeof BlogsArrayResponseSchema>;
+
+
+
+export const SingleBlogResponseSchema = APISuccessSchema.extend({
+    blog: BlogSchema.extend({
+        supabaseFileImgId: z.string({ message: "A blog response must come with a supabase file Id for the image!!!" })
+    })
+});
+
+
+export type ISingleBlogResponse = z.infer<typeof SingleBlogResponseSchema>;

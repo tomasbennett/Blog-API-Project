@@ -10,6 +10,9 @@ import { MainHomePage } from './features/blogs/layouts/MainHomePage'
 import { PostBlogPageLayout } from './features/posts/layouts/PostBlogPageLayout'
 import { AboutPage } from './components/AboutPage'
 import { ContactsPage } from './components/ContactsPage'
+import { SingleBlogLayout } from './features/blogs/layouts/SingleBlogLayout'
+import { RandomBlog } from './features/blogs/services/RandomBlog'
+import { SingleBlogFetch } from './features/blogs/services/SingleBlogFetch'
 
 
 const router = createBrowserRouter([
@@ -59,6 +62,20 @@ const router = createBrowserRouter([
           {
             element: <ContentPagesLayout />,
             children: [
+              {
+                path: "blog",
+                element: <SingleBlogLayout />,
+                children: [
+                  {
+                    index: true,
+                    element: <RandomBlog />
+                  },
+                  {
+                    path: ":blogId",
+                    element: <SingleBlogFetch />
+                  }
+                ]
+              },
               {
                 path: "home",
                 element: <MainHomePage />
