@@ -4,7 +4,7 @@
 
     flex: 1 1 0;
 
-    padding: 1.5rem;
+    padding: var(--outer-container-padding);
 
     width: 100%;
 

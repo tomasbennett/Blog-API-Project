@@ -11,7 +11,8 @@ import { IResponseTypes } from "../models/IResponseTypes";
 export async function formResponseHandler(
     url: string,
     fetchOptions: RequestInit,
-    navigate: NavigateFunction
+    navigate: NavigateFunction,
+    // abortController: AbortController | null
 ): Promise<IResponseTypes | null> {
     const accessToken = await GetAccessToken(navigate);
     if (!accessToken) return null;

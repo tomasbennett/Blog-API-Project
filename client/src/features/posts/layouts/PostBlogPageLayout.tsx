@@ -152,8 +152,10 @@ export function PostBlogPageLayout() {
 
             <div className={styles.outerContainer}>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
-
+                <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                    <h2 className={styles.header}>
+                        Create a Blog
+                    </h2>
                     {
                         errors.root?.message &&
                         <p className={styles.error}>
@@ -168,12 +170,13 @@ export function PostBlogPageLayout() {
                         </p>
                     }
 
-                    <div>
+                    <div className={styles.inputLabelContainer}>
                         <label htmlFor="image">Blog cover image</label>
                         <input
                             {...register("blogImgFile")}
                             type="file"
                             id="image"
+                            
                         />
                     </div>
 
@@ -185,12 +188,13 @@ export function PostBlogPageLayout() {
                     }
 
 
-                    <div>
+                    <div className={styles.inputLabelContainer}>
                         <label htmlFor="title">Blog title</label>
                         <input
                             {...register("title")}
                             type="text"
                             id="title"
+                            placeholder="Please enter a blog title here..."
                         />
                     </div>
 
@@ -204,15 +208,16 @@ export function PostBlogPageLayout() {
                     }
 
 
-                    <div>
+                    <div className={styles.inputLabelContainer}>
                         <label htmlFor="body">Blog body</label>
                         <textarea
                             {...register("body")}
                             id="body"
+                            placeholder="Please enter a blog body message here..."
                         ></textarea>
                     </div>
 
-                    <button type="submit">
+                    <button className={styles.submitBtn} type="submit">
                         {
                             isLoading ?
                                 <LoadingCircle height="80%" />

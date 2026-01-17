@@ -173,8 +173,6 @@ ul.pageSelectionContainer {
         object-fit: contain;
         overflow: hidden;
 
-        transition: transform .4s linear;
-
     }
 }
 
@@ -184,10 +182,6 @@ ul.pageSelectionContainer {
     background-color: var(--dark-container-colour);
 
     fill: white;
-
-    &>svg{
-        transform: scale(1.08);
-    }
 
     /* border: .1rem solid white; */
 
