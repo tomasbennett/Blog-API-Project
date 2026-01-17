@@ -69,16 +69,45 @@
 
 
 
-.viewBtn{
-    cursor: pointer;
+.btnContainer{
+    
 
+    display: flex;
+    column-gap: 1rem;
+
+
+}
+
+
+
+.btn{
+    cursor: pointer;
+    
     padding: 1rem;
+
+    transition: background-color .2s linear, color .2s linear;
+}
+
+
+.delBtn{
+    background-color: red;
+    color: white;
+}
+
+
+.delBtn:hover{
+    background-color: white;
+    color: red;
+}
+
+
+
+.viewBtn{
 
     background-color: var(--dark-container-colour);
     color: white;
 
 
-    transition: background-color .2s linear, color .2s linear;
 }
 
 .viewBtn:hover{

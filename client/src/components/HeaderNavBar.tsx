@@ -96,7 +96,7 @@ export function HeaderNavBar() {
 
                             <li>
 
-                                <NavLink to={"/blogs"} className={setActive}>
+                                <NavLink to={"/home"} className={setActive}>
                                     Home
                                 </NavLink>
 
@@ -114,6 +114,14 @@ export function HeaderNavBar() {
 
                                 <NavLink className={setActive} to={"/contacts"}>
                                     Contacts
+                                </NavLink>
+
+                            </li>
+
+                            <li>
+
+                                <NavLink className={setActive} to={"/post"}>
+                                    Post
                                 </NavLink>
 
                             </li>

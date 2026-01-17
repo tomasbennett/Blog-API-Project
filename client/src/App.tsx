@@ -8,6 +8,8 @@ import { ErrorPageLayout } from './features/error/layouts/ErrorLayout'
 import { ContentPagesLayout } from './layouts/ContentPagesLayout'
 import { MainHomePage } from './features/blogs/layouts/MainHomePage'
 import { PostBlogPageLayout } from './features/posts/layouts/PostBlogPageLayout'
+import { AboutPage } from './components/AboutPage'
+import { ContactsPage } from './components/ContactsPage'
 
 
 const router = createBrowserRouter([
@@ -18,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="blogs" replace />
+        element: <Navigate to="home" replace />
       },
       {
         path: "error",
@@ -58,16 +60,16 @@ const router = createBrowserRouter([
             element: <ContentPagesLayout />,
             children: [
               {
-                path: "blogs",
+                path: "home",
                 element: <MainHomePage />
               },
               {
                 path: "about",
-                element: <p>ABOUT PAGE</p>
+                element: <AboutPage />
               },
               {
                 path: "contacts",
-                element: <p>CONTACTS PAGE</p>
+                element: <ContactsPage />
               },
               {
                 path: "post",

@@ -21,6 +21,12 @@ export function MainBlog({
         navigate(`/blog/${blog.id}`, { replace: true })
     }
 
+    const onDel = () => {
+
+    }
+
+
+
     return (
         <>
         
@@ -38,9 +44,18 @@ export function MainBlog({
                             {blog.title}
                         </h3>
 
-                        <button onClick={onView} className={styles.viewBtn} type="button">
-                            View
-                        </button>
+                        <div className={styles.btnContainer}>
+
+                            <button onClick={onView} className={`${styles.btn} ${styles.viewBtn}`} type="button">
+                                View
+                            </button>
+
+                            <button onClick={onDel} className={`${styles.btn} ${styles.delBtn}`} type="button">
+                                Delete
+                            </button>
+
+                        </div>
+
 
                     </div>
 
