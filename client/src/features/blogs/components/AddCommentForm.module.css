@@ -1,0 +1,87 @@
+
+
+.outerContainer{
+    width: var(--containers-width);
+
+
+    background-color: var(--soft-light-colour);
+
+    box-shadow: var(--containers-box-shadow);
+
+    padding: var(--containers-padding);
+}
+
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    row-gap: 2rem;
+
+    width: 100%;
+}
+
+
+.formHeader{
+    font-size: 2.6rem;
+
+    background-color: var(--blue-selected-button-colour);
+    color: white;
+
+    padding: .5rem;
+
+    box-shadow: -.5rem .5rem 0 white;
+}
+
+
+.labelInputContainer{
+
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.8rem;
+
+
+    &>input{
+        width: min(40rem, 100%);
+
+        padding: .5rem;
+    }
+
+    &>label{
+        background-color: var(--dark-container-colour);
+        color: white;
+    
+        padding: .5rem;
+
+        font-size: large;
+    
+        box-shadow: -.5rem .5rem 0 white;
+    }
+}
+
+
+.submitBtn{
+    margin-top: 1rem;
+
+    padding: 1rem;
+
+    cursor: pointer;
+
+    background-color: var(--dark-container-colour);
+    color: white;
+
+    transition: background-color .2s linear, color .2s linear, margin-left .2s linear;
+}
+
+
+.submitBtn:hover{
+    background-color: white;
+    color: var(--dark-container-colour);
+
+    margin-left: 1rem;
+}

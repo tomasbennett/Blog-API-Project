@@ -9,6 +9,8 @@
     flex-direction: column;
 
     overflow: hidden;
+
+    /* overflow: auto; */
     /* row-gap: 2rem; */
 
     /* padding: 1rem 2rem; */

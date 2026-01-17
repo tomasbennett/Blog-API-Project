@@ -1,14 +1,22 @@
 .outerContainer{
+
+    --containers-width: 70rem;
+
+    --containers-padding: 1rem;
+    --containers-box-shadow: -2rem 2rem 0 var(--dark-container-colour);
+
     flex: 1 1 0;
     width: 100%;
 
     padding: var(--outer-container-padding);
 
     display: flex;
-    row-gap: 2rem;
+    row-gap: 4rem;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+
+    overflow: auto;
 
     color: var(--dark-container-colour);
 
@@ -25,6 +33,7 @@
     flex-shrink: 0;
 
     /* height: 70rem; */
+    width: var(--containers-width);
     
     background-color: var(--soft-light-colour);
 
@@ -32,7 +41,7 @@
     flex-direction: column;
     align-items: flex-start;
 
-    box-shadow: -2rem 2rem 0 var(--dark-container-colour);
+    box-shadow: var(--containers-box-shadow);
 
 
 
@@ -60,7 +69,7 @@
 .lowerBlogContainer{
     width: 100%;
 
-    padding: 1rem;
+    padding: var(--containers-padding);
 
 
     display: flex;

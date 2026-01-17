@@ -10,6 +10,7 @@ import { domain } from "../../../services/EnvironmentAPI";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
 import { formatDateUS } from "../../../services/DateFormatter";
+import { AddCommentForm } from "../components/AddCommentForm";
 
 
 
@@ -67,37 +68,54 @@ export function SingleBlogLayout() {
 
                     blog ?
 
-                        <div className={styles.blogContainer}>
+                        <>
+                        
+                        
+                            <div className={styles.blogContainer}>
 
-                            <div className={styles.imgContainer}>
-                                <img src={`${domain}/api/inline-file/${blog.id}`} alt={`Main Image: ${blog.title}`} />
-                            </div>
+                                <div className={styles.imgContainer}>
+                                    <img src={`${domain}/api/inline-file/${blog.id}`} alt={`Main Image: ${blog.title}`} />
+                                </div>
 
-                            <div className={styles.lowerBlogContainer}>
-                                
-                                <h2 className={styles.blogTitle}>
-                                    {blog.title}
-                                </h2>
+                                <div className={styles.lowerBlogContainer}>
 
-                                <div className={styles.infoContainer}>
+                                    <h2 className={styles.blogTitle}>
+                                        {blog.title}
+                                    </h2>
 
-                                    <p className={`${styles.info} ${styles.blogUsername}`}>
-                                        {blog.username}
-                                    </p>
+                                    <div className={styles.infoContainer}>
 
-                                    <p className={`${styles.info} ${styles.blogCreatedAt}`}>
-                                        {formatDateUS(blog.createdAt)}
+                                        <p className={`${styles.info} ${styles.blogUsername}`}>
+                                            {blog.username}
+                                        </p>
+
+                                        <p className={`${styles.info} ${styles.blogCreatedAt}`}>
+                                            {formatDateUS(blog.createdAt)}
+                                        </p>
+
+                                    </div>
+
+                                    <p className={styles.blogBody}>
+                                        {blog.body}
                                     </p>
 
                                 </div>
 
-                                <p className={styles.blogBody}>
-                                    {blog.body}
-                                </p>
+                            </div>
+
+                            <div className={styles.addCommentFormContainer}>
+
+                                <AddCommentForm />
 
                             </div>
 
-                        </div>
+                            <div className={styles.commentsContainer}>
+
+                                
+
+                            </div>
+                        </>
+
 
                     :
 
