@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { IBlog } from "../../../../../shared/features/blogs/models/IBlogsArrayResponse";
 import { formatDateUS } from "../../../services/DateFormatter";
 import { domain } from "../../../services/EnvironmentAPI";
@@ -12,6 +13,14 @@ export function MainBlog({
     blog
 }: IMainBlogProps) {
 
+
+    const navigate = useNavigate();
+
+
+    const onView = () => {
+        navigate(`/blog/${blog.id}`, { replace: true })
+    }
+
     return (
         <>
         
@@ -23,9 +32,17 @@ export function MainBlog({
 
                 <div className={styles.lowerTextContainer}>
 
-                    <h3 className={styles.blogTitle}>
-                        {blog.title}
-                    </h3>
+                    <div className={styles.upperTextContainer}>
+
+                        <h3 className={styles.blogTitle}>
+                            {blog.title}
+                        </h3>
+
+                        <button onClick={onView} className={styles.viewBtn} type="button">
+                            View
+                        </button>
+
+                    </div>
 
 
                     <div className={styles.middleTextContainer}>
