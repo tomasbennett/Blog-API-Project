@@ -163,14 +163,14 @@ export function PostBlogPageLayout() {
                         </p>
                     }
 
-                    {
-                        errors.blogImgFile?.message &&
-                        <p className={styles.error}>
-                            {errors.blogImgFile.message}
-                        </p>
-                    }
 
                     <div className={styles.inputLabelContainer}>
+                        {
+                            errors.blogImgFile?.message &&
+                            <p className={styles.error}>
+                                {errors.blogImgFile.message}
+                            </p>
+                        }
                         <label htmlFor="image">Blog cover image</label>
                         <input
                             {...register("blogImgFile")}
@@ -180,15 +180,15 @@ export function PostBlogPageLayout() {
                         />
                     </div>
 
-                    {
-                        errors.title?.message &&
-                        <p className={styles.error}>
-                            {errors.title.message}
-                        </p>
-                    }
 
 
                     <div className={styles.inputLabelContainer}>
+                        {
+                            errors.title?.message &&
+                            <p className={styles.error}>
+                                {errors.title.message}
+                            </p>
+                        }
                         <label htmlFor="title">Blog title</label>
                         <input
                             {...register("title")}
@@ -200,15 +200,15 @@ export function PostBlogPageLayout() {
 
 
 
-                    {
-                        errors.body?.message &&
-                        <p className={styles.error}>
-                            {errors.body.message}
-                        </p>
-                    }
 
 
                     <div className={styles.inputLabelContainer}>
+                        {
+                            errors.body?.message &&
+                            <p className={styles.error}>
+                                {errors.body.message}
+                            </p>
+                        }
                         <label htmlFor="body">Blog body</label>
                         <textarea
                             {...register("body")}

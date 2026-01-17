@@ -53,6 +53,7 @@
 .inputLabelContainer{
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     row-gap: .5rem;
 
     width: 80%;
@@ -64,6 +65,8 @@
     &>input[type="text"],
     &>textarea{
         padding: .5rem .5rem;
+
+        width: 100%;
     }
 
     &>textarea{
@@ -107,5 +110,12 @@
 
 
 .error{
-    color: red;
+    color: white;
+    background-color: red;
+
+    margin-bottom: 1rem;
+
+    box-shadow: -.5rem .5rem 0 white;
+
+    padding: .5rem .8rem;
 }
