@@ -18,7 +18,7 @@
 
 .form{
     height: 80%;
-    width: min(100%, 50rem);
+    width: min(95%, 50rem);
 
     background-color: var(--soft-light-colour);
 

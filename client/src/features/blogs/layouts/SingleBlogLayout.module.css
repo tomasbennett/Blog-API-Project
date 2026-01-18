@@ -1,6 +1,6 @@
 .outerContainer{
 
-    --containers-width: 70rem;
+    --containers-width: min(70rem, 95%);
 
     --containers-padding: 1rem;
     --containers-box-shadow: -2rem 2rem 0 var(--dark-container-colour);
@@ -119,6 +119,15 @@
 
     font-size: 1.7rem;
 }
+
+
+
+.addCommentFormContainer{
+    width: var(--containers-width);
+}
+
+
+
 
 
 .commentsContainer{
