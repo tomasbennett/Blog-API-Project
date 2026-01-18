@@ -13,7 +13,8 @@ export function RandomBlog() {
     const {
         setBlog,
         setIsLoading,
-        setIsError
+        setIsError,
+        setComments
     } = useOutletContext<ISingleBlogPageContext>()
 
 
@@ -52,8 +53,10 @@ export function RandomBlog() {
                     const randomIndx: number = Math.floor(Math.random() * blogResult.data.blogs.length);
 
                     /* CHECK IF THERE ARE BLOGS THROUGH THE LENGTH OF THE ARRAY BEING GREATER THAN ZERO */
+                    const selectedBlogId: string = blogResult.data.blogs[randomIndx].id;
 
-                    setBlog(blogResult.data.blogs[randomIndx]);
+                    // setBlog(blogResult.data.blogs[randomIndx]);
+                    navigate(`/blog/${selectedBlogId}`, { replace: true })
                     return;
 
                 }

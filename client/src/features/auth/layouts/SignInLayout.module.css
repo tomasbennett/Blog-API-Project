@@ -17,7 +17,7 @@
 }
 
 
-@media (hover: hover) and (pointer: fine) {
+/* @media (hover: hover) and (pointer: fine) {
     .signinOuterContainer {
 
         width: 89%;
@@ -29,7 +29,7 @@
     .signinOuterContainer:hover {
         transform: translate(-50%, -50%) scale(1.01);
     }
-}
+} */
 
 
 
@@ -135,7 +135,7 @@
 
     padding: 1.2rem 8rem;
 
-    background: var(--blue-button-colour);
+    background: var(--blue-selected-button-colour);
     color: white;
     border: none;
     border-radius: 6rem;
@@ -147,7 +147,7 @@
 }
 
 .submitButton:hover {
-    background: var(--hover-button-colour);
+    background: blue;
 }
 
 .switchSignInParagraph {
@@ -164,7 +164,7 @@
 }
 
 .switchSignInParagraph a {
-    color: var(--blue-button-colour);
+    color: blue;
     text-decoration: none;
     font-weight: bold;
     transition: 0.25s;
@@ -172,7 +172,7 @@
 }
 
 .switchSignInParagraph a:hover {
-    color: var(--hover-button-colour);
+    color: var(--blue-selected-button-colour);
 }
 
 

@@ -5,7 +5,8 @@ import { BlogSchema } from "./IBlogsArrayResponse";
 export const NewBlogReqSchemaServer = BlogSchema.omit({
     username: true, 
     createdAt: true,
-    id: true
+    id: true,
+    comments: true
 });
 
 

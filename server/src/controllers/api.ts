@@ -5,10 +5,12 @@ import { prisma } from "../db/prisma";
 import { IBlogsArrayResponse, ISingleBlogResponse } from "../../../shared/features/blogs/models/IBlogsArrayResponse";
 import { ICustomSuccessMessage } from "../../../shared/features/api/models/APISuccessResponse";
 import { deleteSupaBaseFile } from "../services/DeleteFileSupabase";
+import { IComment } from "../../../shared/features/comments/models/ICommentResponse";
+import { IBlogsWithoutComments, IBlogsWithoutCommentsResponse } from "../../../shared/features/blogs/models/IBlogsHomePage";
 
 export const router = Router();
 
-router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<ICustomErrorResponse | IBlogsArrayResponse>, next: NextFunction) => {
+router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<ICustomErrorResponse | IBlogsWithoutCommentsResponse>, next: NextFunction) => {
 
     try {
         const blogs = await prisma.blog.findMany({
@@ -33,7 +35,7 @@ router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<IC
         }
 
 
-        const response: IBlogsArrayResponse = {
+        const response: IBlogsWithoutCommentsResponse = {
             ok: true,
             status: 200,
             message: "Successfully returning all blogs",
@@ -44,7 +46,7 @@ router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<IC
                     body: blog.body,
                     createdAt: blog.createdAt,
                     username: blog.user.username,
-                    supabaseFileImgId: blog.blogImgFile.supabaseFileId,
+                    supabaseFileImgId: blog.blogImgFile.supabaseFileId
                 }
             })
         }
@@ -68,7 +70,12 @@ router.get("/blogs/:blogId", ensureAuthentication, async (req: Request<{ blogId:
         },
         include: {
             user: true,
-            blogImgFile: true
+            blogImgFile: true,
+            comments: {
+                include: {
+                    user: true
+                }
+            }
         }
     });
 
@@ -94,6 +101,14 @@ router.get("/blogs/:blogId", ensureAuthentication, async (req: Request<{ blogId:
             createdAt: blog.createdAt,
             supabaseFileImgId: blog.blogImgFile.supabaseFileId,
             username: blog.user.username,
+            comments: blog.comments.map((comment) => {
+                return {
+                    id: comment.id,
+                    username: comment.user.username,
+                    body: comment.body,
+                    createdAt: comment.createdAt
+                }
+            })
         }
     }
 

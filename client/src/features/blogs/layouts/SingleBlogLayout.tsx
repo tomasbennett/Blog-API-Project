@@ -11,6 +11,8 @@ import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
 import { formatDateUS } from "../../../services/DateFormatter";
 import { AddCommentForm } from "../components/AddCommentForm";
+import { IComment } from "../../../../../shared/features/comments/models/ICommentResponse";
+import { Comment } from "../components/Comment";
 
 
 
@@ -23,6 +25,7 @@ export function SingleBlogLayout() {
     const [isError, setIsError] = useState<ICustomErrorResponse | null>(null);
 
     const [blog, setBlog] = useState<IBlog | null>(null);
+    const [comments, setComments] = useState<IComment[]>([]);
 
 
     useEffect(() => {
@@ -35,7 +38,8 @@ export function SingleBlogLayout() {
     const ctx: ISingleBlogPageContext = {
         setBlog,
         setIsLoading,
-        setIsError
+        setIsError,
+        setComments
     }
 
 
@@ -105,12 +109,21 @@ export function SingleBlogLayout() {
 
                             <div className={styles.addCommentFormContainer}>
 
-                                <AddCommentForm />
+                                <AddCommentForm blogId={blog.id} setComments={setComments} />
 
                             </div>
 
                             <div className={styles.commentsContainer}>
 
+                                {
+                                    comments.length > 0 &&
+
+                                        comments.map((comment, indx) => {
+                                            return (
+                                                <Comment key={comment.id} comment={comment} />
+                                            )
+                                        })
+                                }
                                 
 
                             </div>

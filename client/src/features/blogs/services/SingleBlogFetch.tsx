@@ -16,7 +16,8 @@ export function SingleBlogFetch() {
     const {
         setBlog,
         setIsLoading,
-        setIsError
+        setIsError,
+        setComments
     } = useOutletContext<ISingleBlogPageContext>();
 
     const navigate = useNavigate();
@@ -60,6 +61,8 @@ export function SingleBlogFetch() {
                 const blogResult = SingleBlogResponseSchema.safeParse(resJson);
                 if (blogResult.success) {
                     setBlog(blogResult.data.blog);
+                    setComments(blogResult.data.blog.comments);
+
                     return;
                 }
     

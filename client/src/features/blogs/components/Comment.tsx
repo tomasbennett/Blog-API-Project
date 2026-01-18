@@ -1,7 +1,15 @@
+import { IComment } from "../../../../../shared/features/comments/models/ICommentResponse";
+import { formatDateUS } from "../../../services/DateFormatter";
 import styles from "./Comment.module.css";
 
 
-export function Comment() {
+type ICommentProps = {
+    comment: IComment
+}
+
+export function Comment({
+    comment
+}: ICommentProps) {
     return (
         <>
 
@@ -10,13 +18,13 @@ export function Comment() {
                 <div className={styles.upperContainer}>
                     <p className={`${styles.username} ${styles.info}`}>
                         {
-                            /* usernamne */
+                            comment.username
                         }
                     </p>
 
                     <p className={`${styles.createdAt} ${styles.info}`}>
                         {
-                            /* createdAt */
+                            formatDateUS(comment.createdAt)
                         }
                     </p>
                 </div>
@@ -24,7 +32,7 @@ export function Comment() {
 
                 <p className={styles.body}>
                     {
-                        /* body */
+                        comment.body
                     }
                 </p>
 

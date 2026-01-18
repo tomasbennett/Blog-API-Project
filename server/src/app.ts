@@ -11,7 +11,7 @@ import { router as authRouter } from "./controllers/auth"
 import { router as signInRouter } from "./controllers/sign-in";
 import { router as uploadRouter } from "./controllers/upload";
 import { router as downloadRouter } from "./controllers/downloads";
-
+import { router as commentRouter } from "./controllers/comments";
 
 
 import { environment } from "../../shared/constants";
@@ -57,7 +57,7 @@ app.use(cookieParser());
 
 
 
-app.use("/api", apiRouter, authRouter, signInRouter, uploadRouter, downloadRouter);
+app.use("/api", commentRouter, apiRouter, authRouter, signInRouter, uploadRouter, downloadRouter);
 
 
 app.get(/.*/, (req: Request, res: Response, next: NextFunction) => {

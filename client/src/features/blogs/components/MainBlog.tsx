@@ -3,9 +3,10 @@ import { IBlog } from "../../../../../shared/features/blogs/models/IBlogsArrayRe
 import { formatDateUS } from "../../../services/DateFormatter";
 import { domain } from "../../../services/EnvironmentAPI";
 import styles from "./MainBlog.module.css";
+import { IBlogsWithoutComments } from "../../../../../shared/features/blogs/models/IBlogsHomePage";
 
 type IMainBlogProps = {
-    blog: IBlog
+    blog: IBlogsWithoutComments
 }
 
 

@@ -1,10 +1,11 @@
 import { IBlog } from "../../../../../shared/features/blogs/models/IBlogsArrayResponse";
+import { IBlogsWithoutComments } from "../../../../../shared/features/blogs/models/IBlogsHomePage";
 import { domain } from "../../../services/EnvironmentAPI";
 import styles from "./SidebarBlog.module.css";
 
 
 type ISidebarBlogProps = {
-    blog: IBlog
+    blog: IBlogsWithoutComments
 }
 
 export function SidebarBlog({

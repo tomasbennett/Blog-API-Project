@@ -85,3 +85,12 @@
 
     margin-left: 1rem;
 }
+
+.error{
+    background-color: red;
+    color: white;
+
+    padding: .5rem;
+
+    box-shadow: -.5rem .5rem 0 white;
+}

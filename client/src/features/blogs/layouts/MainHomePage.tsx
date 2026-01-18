@@ -1,21 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./MainHomePage.module.css";
 import { useEffect, useMemo, useState } from "react";
-import { BlogsArrayResponseSchema, IBlog } from "../../../../../shared/features/blogs/models/IBlogsArrayResponse";
+import { BlogsArrayResponseSchema, IBlog, IBlogsArrayResponse } from "../../../../../shared/features/blogs/models/IBlogsArrayResponse";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { domain } from "../../../services/EnvironmentAPI";
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
 import { SidebarBlog } from "../components/SidebarBlog";
 import { MainBlog } from "../components/MainBlog";
+import { BlogsWithoutCommentsResponseSchema, IBlogsWithoutComments } from "../../../../../shared/features/blogs/models/IBlogsHomePage";
 
 
 export function MainHomePage() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<ICustomErrorResponse | null>(null)
 
-    const [currBlog, setCurrBlog] = useState<IBlog | null>(null);
-    const [allBlogsArr, setAllBlogsArr] = useState<IBlog[] | null>(null);
+    const [currBlog, setCurrBlog] = useState<IBlogsWithoutComments | null>(null);
+    const [allBlogsArr, setAllBlogsArr] = useState<IBlogsWithoutComments[] | null>(null);
 
     const navigate = useNavigate();
 
@@ -44,7 +45,7 @@ export function MainHomePage() {
 
                 const blogsJson = await response.json();
 
-                const blogsResult = BlogsArrayResponseSchema.safeParse(blogsJson);
+                const blogsResult = BlogsWithoutCommentsResponseSchema.safeParse(blogsJson);
                 if (blogsResult.success) {
                     setAllBlogsArr(blogsResult.data.blogs);
                     setCurrBlog(blogsResult.data.blogs[0]);
