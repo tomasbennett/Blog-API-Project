@@ -140,12 +140,12 @@ export function MainHomePage() {
                 <div className={styles.blogListScrollerSection}>
 
                     {
-                        blogsLength > 0 ?
+                        blogsLength > 0 && currBlog ?
 
                             allBlogsArr!.map((blog, indx) => {
 
                                 return (
-                                    <SidebarBlog blog={blog} key={blog.id} />
+                                    <SidebarBlog setCurrBlog={setCurrBlog} currBlog={currBlog} blog={blog} key={blog.id} />
                                 )
                             })
 

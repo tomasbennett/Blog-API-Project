@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { IBlog } from "../../../../../shared/features/blogs/models/IBlogsArrayResponse";
 import { IBlogsWithoutComments } from "../../../../../shared/features/blogs/models/IBlogsHomePage";
 import { domain } from "../../../services/EnvironmentAPI";
@@ -5,17 +6,35 @@ import styles from "./SidebarBlog.module.css";
 
 
 type ISidebarBlogProps = {
-    blog: IBlogsWithoutComments
+    blog: IBlogsWithoutComments,
+    currBlog: IBlogsWithoutComments,
+    setCurrBlog: React.Dispatch<React.SetStateAction<IBlogsWithoutComments | null>>
 }
 
 export function SidebarBlog({
-    blog
+    blog,
+    currBlog,
+    setCurrBlog
 }: ISidebarBlogProps) {
+
+    const isCurrBlog: boolean = useMemo(() => {
+        return currBlog.id === blog.id;
+    }, [currBlog]);
+
+    const onSelectBlog = () => {
+        if (isCurrBlog) {
+            return;
+        }
+
+        setCurrBlog(blog);
+
+    }
+
 
     return (
         <>
         
-            <div className={styles.outerContainer}>
+            <div onClick={onSelectBlog} className={`${styles.outerContainer} ${isCurrBlog && styles.selected}`}>
 
                 <div className={styles.imgContainer}>
                     <p className={styles.usernameContainer}>

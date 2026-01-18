@@ -7,7 +7,7 @@
 
     row-gap: .5rem;
 
-
+/* overflow: auto; */
 
 
     background-color: white;
@@ -64,12 +64,13 @@
     transition: background-color .2s ease, color .2s ease;
 }
 
-.outerContainer:hover{
+.outerContainer:hover,
+.selected{
     background-color: var(--blue-selected-button-colour);
 
     color: white;
 
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
 
 
     .usernameContainer{
@@ -78,6 +79,9 @@
     }
 }
 
+.selected{
+    transform: scale(1.05);
+}
 
 
 
