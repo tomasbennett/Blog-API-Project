@@ -5,7 +5,7 @@ type ILoadingCircleProps = {
 }
 
 export function LoadingCircle({
-    height = "4rem"
+    height = "4rem",
 }: ILoadingCircleProps) {
     return (
         <>

@@ -48,7 +48,7 @@ export function MainHomePage() {
                 const blogsResult = BlogsWithoutCommentsResponseSchema.safeParse(blogsJson);
                 if (blogsResult.success) {
                     setAllBlogsArr(blogsResult.data.blogs);
-                    setCurrBlog(blogsResult.data.blogs[0]);
+                    setCurrBlog(blogsResult.data.blogs?.[0] ?? null);
                     return;
 
                 }
@@ -123,11 +123,11 @@ export function MainHomePage() {
                     {
                         currBlog ?
 
-                            <MainBlog blog={currBlog} />
+                            <MainBlog setAllBlogsArr={setAllBlogsArr} blog={currBlog} />
 
                         :
 
-                            <p>
+                            <p className={styles.noCurrBlog}>
                                 There are no blogs currently available
                             </p>
                     }

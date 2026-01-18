@@ -7,11 +7,13 @@ import styles from "./HeaderNavBar.module.css";
 
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
-import { accessTokenLocalStorageKey } from "../constants/constants";
+import { accessTokenLocalStorageKey, jsonParsingError, notExpectedFormatError } from "../constants/constants";
 
 export function HeaderNavBar() {
 
     const navigate = useNavigate();
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<ICustomErrorResponse | null>(null);
 
 
@@ -30,6 +32,9 @@ export function HeaderNavBar() {
 
 
         try {
+            setIsLoading(true);
+            setIsError(null);
+
             const response = await basicResponseHandle(
                 `${domain}/api/logout`,
                 {
@@ -45,9 +50,10 @@ export function HeaderNavBar() {
                 return;
             }
 
-            if (response.ok && response.status === 204) {
+            if (response.status === 204) {
                 localStorage.removeItem(accessTokenLocalStorageKey);
                 // Maybe navigate here to login or change signin state on the main page
+                navigate("/sign-in/login", { replace: true });
 
                 return;
 
@@ -61,17 +67,16 @@ export function HeaderNavBar() {
                 return;
             }
 
-            setIsError({
-                ok: false,
-                status: 0,
-                message: "An unknown error occurred on the server side with the response!!!"
-            });
+            setIsError(notExpectedFormatError);
             return;
 
 
         } catch (error) {
-
+            setIsError(jsonParsingError)
             console.log(error);
+
+        } finally {
+            setIsLoading(false);
 
         }
     }

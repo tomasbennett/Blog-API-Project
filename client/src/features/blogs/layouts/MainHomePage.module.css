@@ -54,23 +54,34 @@
 
 
 
-.currBlogSection{
-    grid-area: main;
-
-}
 
 
 
 
 .blogListScrollerSection{
     grid-area: scroll;
-
+    
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-
+    
     row-gap: 2rem;
-
+    
     padding: 1rem 0;
+}
+
+
+
+.currBlogSection{
+    grid-area: main;
+
+
+}
+.noCurrBlog{
+    padding-left: 1rem;
+    margin-top: 1rem;
+
+
+
 }
