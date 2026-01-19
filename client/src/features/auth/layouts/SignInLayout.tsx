@@ -95,7 +95,7 @@ export function SignInLayout() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(data),
-                credentials: "include"
+                // credentials: "include"
             });
 
 

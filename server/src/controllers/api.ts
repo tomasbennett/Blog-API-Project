@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
-import { ensureAuthentication } from "../auth/ensureAuthentication";
+import { ensureAdminAuthentication, ensureAuthentication } from "../auth/ensureAuthentication";
 import { prisma } from "../db/prisma";
 import { IBlogsArrayResponse, ISingleBlogResponse } from "../../../shared/features/blogs/models/IBlogsArrayResponse";
 import { ICustomSuccessMessage } from "../../../shared/features/api/models/APISuccessResponse";
@@ -10,7 +10,7 @@ import { IBlogsWithoutComments, IBlogsWithoutCommentsResponse } from "../../../s
 
 export const router = Router();
 
-router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<ICustomErrorResponse | IBlogsWithoutCommentsResponse>, next: NextFunction) => {
+router.get("/blogs", async (req: Request, res: Response<ICustomErrorResponse | IBlogsWithoutCommentsResponse>, next: NextFunction) => {
 
     try {
         const blogs = await prisma.blog.findMany({
@@ -61,7 +61,7 @@ router.get("/blogs", ensureAuthentication, async (req: Request, res: Response<IC
 
 });
 
-router.get("/blogs/:blogId", ensureAuthentication, async (req: Request<{ blogId: string }>, res: Response<ICustomErrorResponse | ISingleBlogResponse>, next: NextFunction) => {
+router.get("/blogs/:blogId", async (req: Request<{ blogId: string }>, res: Response<ICustomErrorResponse | ISingleBlogResponse>, next: NextFunction) => {
     const { blogId } = req.params;
 
     const blog = await prisma.blog.findUnique({
@@ -122,7 +122,7 @@ router.get("/blogs/:blogId", ensureAuthentication, async (req: Request<{ blogId:
 
 
 
-router.delete("/blog/:blogId", ensureAuthentication, async (req: Request<{ blogId: string }>, res: Response<ICustomErrorResponse>, next: NextFunction) => {
+router.delete("/blog/:blogId", ensureAdminAuthentication, async (req: Request<{ blogId: string }>, res: Response<ICustomErrorResponse>, next: NextFunction) => {
     const { blogId } = req.params;
     const user = req.user!;
 

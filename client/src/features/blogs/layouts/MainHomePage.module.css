@@ -1,12 +1,13 @@
 .outerContainer{
     --padding-content-text: 1rem 1rem;
 
+    align-self: center;
 
     flex: 1 1 0;
 
     padding: var(--outer-container-padding);
 
-    width: 100%;
+    width: min(97%, 180rem);
 
     overflow: hidden;
 
@@ -27,6 +28,9 @@
 
 .outerContainer > *{
     background-color: var(--soft-light-colour);
+
+
+    box-shadow: -1rem 1rem 0 var(--dark-container-colour);
 }
 
 
@@ -47,7 +51,7 @@
     }
 
 
-    & > p{
+    & p{
         font-size: large;
     }
 }
@@ -86,4 +90,45 @@
 
 
 
+}
+
+
+
+.lowerTextBtnContainer{
+    display: flex;
+    column-gap: 2rem;
+    align-items: center;
+
+
+    &>p{
+        margin-right: auto;
+    }
+
+    .authLevelBtn{
+        padding: 1rem;
+/* 
+        font-size: large; */
+
+        white-space: nowrap;
+
+        background-color: var(--dark-container-colour);
+        color: white;
+
+        /* box-shadow: none;
+
+        border: none; */
+
+        cursor: pointer;
+
+        transition: all 0.2s linear;
+    }
+
+}
+
+
+.authLevelBtn:hover{
+    background-color: white;
+    color: var(--dark-container-colour);
+
+    transform: translate(-1rem);
 }

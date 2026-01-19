@@ -75,3 +75,20 @@ export async function ensureAuthentication(req: Request, res: Response<ICustomEr
 
 
 }
+
+
+export async function ensureAdminAuthentication(req: Request, res: Response<ICustomErrorResponse>, next: NextFunction) {
+    await ensureAuthentication(req, res, async () => {
+        const user = req.user!;
+
+        if (user.role !== "ADMIN") {
+            return res.status(403).json({
+                ok: false,
+                status: 403,
+                message: "User is not an admin!!!"
+            });
+        }
+
+        return next();
+    });
+}

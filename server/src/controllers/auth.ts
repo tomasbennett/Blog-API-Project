@@ -7,7 +7,7 @@ import { prisma } from "../db/prisma";
 import { IAccessTokenResponse } from "../../../shared/features/auth/models/IAccessTokenResponse";
 import { CreateAccessToken } from "../services/CreateAccessToken";
 import { invalidRefreshTokenStatus } from "../../../shared/features/auth/constants";
-import { ensureAuthentication } from "../auth/ensureAuthentication";
+import { ensureAdminAuthentication, ensureAuthentication } from "../auth/ensureAuthentication";
 
 
 export const router = Router();
@@ -102,7 +102,18 @@ router.get("/auth/refreshToken", async (req: Request, res: Response<ICustomError
 
 
     }
-})
+});
+
+
+router.get("/auth/checkAuthLevel", ensureAdminAuthentication, (req: Request, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
+    return res.status(200).json({
+        ok: true,
+        status: 200,
+        message: "User is authenticated as an admin with access token"
+    });
+});
+
+
 
 
 //SO WE WANT TO SAY SEND IN YOUR ACCESS TOKEN PLEASE

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { ensureAuthentication } from "../auth/ensureAuthentication";
+import { ensureAdminAuthentication, ensureAuthentication } from "../auth/ensureAuthentication";
 import upload from "../supabase/multer";
 import { supabase } from "../supabase/client";
 import { prisma } from "../db/prisma";
@@ -12,9 +12,9 @@ import { INewBlogReqServer, NewBlogReqSchemaServer } from "../../../shared/featu
 
 export const router = Router();
 
+//NEW BLOG ROUTER
 
-
-router.post("/files/upload", ensureAuthentication, upload.single("file"), async (req: Request<{}, {}, INewBlogReqServer>, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
+router.post("/files/upload", ensureAdminAuthentication, upload.single("file"), async (req: Request<{}, {}, INewBlogReqServer>, res: Response<ICustomErrorResponse | ICustomSuccessMessage>, next: NextFunction) => {
     try {
         const file = req.file;
         const user = req.user!;

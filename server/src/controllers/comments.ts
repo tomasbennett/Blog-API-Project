@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { ensureAuthentication } from "../auth/ensureAuthentication";
+import { ensureAdminAuthentication, ensureAuthentication } from "../auth/ensureAuthentication";
 import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
 import { CommentRequestSchemaServer, ICommentRequestServer } from "../../../shared/features/comments/models/ICommentRequest";
 import { prisma } from "../db/prisma";

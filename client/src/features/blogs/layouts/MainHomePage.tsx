@@ -109,9 +109,19 @@ export function MainHomePage() {
                         Welcome to my blog project home page
                     </h2>
 
-                    <p>
-                        Please select from one of the given blogs below to read more about it, and don't forget to sign in to leave a comment!!!
-                    </p>
+                    <div className={styles.lowerTextBtnContainer}>
+                        <p>
+                            Please select from one of the given blogs below to read more about it, and don't forget to sign in to leave a comment!!!
+                        </p>
+
+                        <button className={styles.authLevelBtn} type="button">
+                            {
+                                "Sign in"
+                            }
+                        </button>
+
+                    </div>
+
 
                 </div>
 
