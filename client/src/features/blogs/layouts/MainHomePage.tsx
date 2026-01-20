@@ -9,6 +9,8 @@ import { jsonParsingError, notExpectedFormatError } from "../../../constants/con
 import { SidebarBlog } from "../components/SidebarBlog";
 import { MainBlog } from "../components/MainBlog";
 import { BlogsWithoutCommentsResponseSchema, IBlogsWithoutComments } from "../../../../../shared/features/blogs/models/IBlogsHomePage";
+import { useAuth } from "../../../context/useAuthLevel";
+import { resolveAuthResponse } from "../../../services/AuthHandler";
 
 
 export function MainHomePage() {
@@ -20,6 +22,10 @@ export function MainHomePage() {
 
     const navigate = useNavigate();
 
+    const {
+        userAuth
+    } = useAuth();
+
 
 
     useEffect(() => {
@@ -28,20 +34,18 @@ export function MainHomePage() {
             setIsError(null);
             setIsLoading(true);
 
-            const response = await basicResponseHandle(
+            const response = await fetch(
                 `${domain}/api/blogs`,
                 {
                     method: "GET"
-                },
-                navigate,
-                setIsError
+                }
             );
 
-            if (response === null) {
-                return;
-            }
-
+            
             try {
+                
+            
+
 
                 const blogsJson = await response.json();
 
@@ -114,9 +118,11 @@ export function MainHomePage() {
                             Please select from one of the given blogs below to read more about it, and don't forget to sign in to leave a comment!!!
                         </p>
 
-                        <button className={styles.authLevelBtn} type="button">
+                        <button onClick={() => {
+                            navigate(userAuth.authLevel.mainMenuNav, { replace: true });
+                        }} className={styles.authLevelBtn} type="button">
                             {
-                                "Sign in"
+                                userAuth.authLevel.mainMenuText
                             }
                         </button>
 

@@ -10,6 +10,8 @@ import { domain } from "../../../services/EnvironmentAPI";
 import { formResponseHandler } from "../../../services/FormResponseHandler";
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
 import { LoadingCircle } from "../../../components/LoadingCircle";
+import { useAuth } from "../../../context/useAuthLevel";
+import { guestAuth, userAuth as userAuthFunc } from "../../../constants/authContexts";
 
 
 export function PostBlogPageLayout() {
@@ -41,6 +43,9 @@ export function PostBlogPageLayout() {
             abortControllerRef.current?.abort();
         }
     }, []);
+
+
+    const { userAuth, setUserAuth } = useAuth();
 
     const onSubmit = async (data: INewBlogReq) => {
 
@@ -81,7 +86,22 @@ export function PostBlogPageLayout() {
                 return;
             }
 
-            if (response.type === "customError") {
+
+            if (response.type === "userAuthError" && response.status === 401) {
+                setUserAuth(guestAuth());
+                navigate("/");
+                return;
+            }
+
+            if (response.type === "userAuthError" && response.status === 403) {
+                setUserAuth(userAuthFunc());
+                navigate("/");
+                return;
+            }
+
+
+
+            if (response.type === "customError" || response.type === "userAuthError") {
                 setError("root", {
                     message: response.error.message,
                     type: "server"

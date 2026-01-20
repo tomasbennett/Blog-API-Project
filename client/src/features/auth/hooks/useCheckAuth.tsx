@@ -4,74 +4,71 @@ import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHan
 import { NewAccessTokenRequest } from "../../../services/NewAccessTokenRequest";
 import { domain } from "../../../services/EnvironmentAPI";
 import { accessTokenLocalStorageKey } from "../../../constants/constants";
+import { formResponseHandler } from "../../../services/FormResponseHandler";
+import { useAuth } from "../../../context/useAuthLevel";
+import { adminAuth, guestAuth, userAuth as userAuthFunc } from "../../../constants/authContexts";
 
 export function useCheckAuth() {
-    const [auth, setAuth] = useState<boolean | null>(null);
+    // const [auth, setAuth] = useState<boolean | null>(null);
+    const {
+        userAuth,
+        setUserAuth
+    } = useAuth();
+
 
     const navigate = useNavigate();
 
     useEffect(() => {
         async function checkAuth() {
-            try {
-                //CHECK IF THE ACCESS TOKEN YOU HAVE WORKS IF NOT REFRESH AND THEN SET AUTH
-                const accessToken = localStorage.getItem(accessTokenLocalStorageKey);
-                if (!accessToken) {
-                    console.log("ACCESS TOKEN NOT FOUND");
-                    //IMMEDIATELY ASK THE REFRESH TOKEN FOR A NEW ONE
-                    
-                    const newAccessToken = await NewAccessTokenRequest(navigate);
+            // try {
+            const response = await formResponseHandler(
+                `${domain}/api/auth/checkAuthLevel`,
+                {
+                    method: "GET"
+                },
+                navigate
+            );
 
-                    if (!newAccessToken) {
-                        setAuth(false);
-                        return;
-                    }
+            if (!response) {
+                return;
+            }
 
-                    setAuth(true);
-                    return;
+            if (response.type === "response" && response.data.status === 200) {
+                setUserAuth(adminAuth());
+                return;
+            }
 
-
-                }
-                
-                console.log("ACCESS TOKEN FOUND: " + accessToken);
-
-                
-                const authRequest = await fetch(`${domain}/api/auth/checkAccessToken`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                });
-
-
-
-
-                if (authRequest.ok) {
-                    console.log("ACCESS TOKEN OK: ", authRequest);
-                    setAuth(true);
-                    return;
-                }
-
-                console.log("ACCESS TOKEN NOT OK: ", authRequest);
-
-                const newAccessToken = await NewAccessTokenRequest(navigate);
-
-                if (!newAccessToken) {
-                    setAuth(false);
-                    return;
-                };
-
-                setAuth(true);
+            if ((response.type === "userAuthError" && response.status === 401) || response.type === "customError") {
+                setUserAuth(guestAuth());
                 return;
 
-
-            } catch (error) {
-
-                console.log("ERROR OCCURS WHEN FETCHING WITH ACCESS TOKEN: ", error);
-                setAuth(false);
-                SendToSignInErrorHandler(error, navigate);
-
-
             }
+
+            if (response.type === "userAuthError" && response.status === 403) {
+                setUserAuth(userAuthFunc());
+                return;
+            }
+
+
+            //I THINK THAT I CLEARED ALL OUTCOMES ABOVE BUT JUST IN CASE
+
+            setUserAuth(guestAuth());
+            return;
+
+
+
+
+
+            // } catch (error) {
+
+            //     console.log("ERROR OCCURS WHEN FETCHING WITH ACCESS TOKEN: ", error);
+            //     setUserAuth(guestAuth());
+            //     SendToSignInErrorHandler(error, navigate);
+
+
+            //     // setAuth(false);
+
+            // }
         }
 
         checkAuth();
@@ -79,6 +76,6 @@ export function useCheckAuth() {
 
 
     return {
-        auth
+        userAuth
     }
 }

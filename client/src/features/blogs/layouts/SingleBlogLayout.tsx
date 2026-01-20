@@ -13,6 +13,7 @@ import { formatDateUS } from "../../../services/DateFormatter";
 import { AddCommentForm } from "../components/AddCommentForm";
 import { IComment } from "../../../../../shared/features/comments/models/ICommentResponse";
 import { Comment } from "../components/Comment";
+import { useAuth } from "../../../context/useAuthLevel";
 
 
 
@@ -26,6 +27,10 @@ export function SingleBlogLayout() {
 
     const [blog, setBlog] = useState<IBlog | null>(null);
     const [comments, setComments] = useState<IComment[]>([]);
+
+    const {
+        userAuth
+    } = useAuth();
 
 
     useEffect(() => {
@@ -41,6 +46,8 @@ export function SingleBlogLayout() {
         setIsError,
         setComments
     }
+
+    useEffect(() => console.dir(useAuth), [useAuth]);
 
 
     return (
@@ -107,11 +114,20 @@ export function SingleBlogLayout() {
 
                             </div>
 
-                            <div className={styles.addCommentFormContainer}>
+                            {
+                                userAuth.authLevel.commentPermission ?
+                                    <div className={styles.addCommentFormContainer}>
 
-                                <AddCommentForm blogId={blog.id} setComments={setComments} />
+                                        <AddCommentForm blogId={blog.id} setComments={setComments} />
 
-                            </div>
+                                    </div>
+                                :
+
+                                    <p>
+                                        Check out some of these comments...
+                                    </p>
+                            }
+
 
                             <div className={styles.commentsContainer}>
 

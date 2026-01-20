@@ -1,0 +1,113 @@
+.outerContainer{
+    padding: var(--outer-container-padding);
+
+    flex: 1 1 0;
+    width: 100%;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    color: var(--dark-container-colour);
+
+}
+
+
+.form{
+    height: 80%;
+    width: min(95%, 50rem);
+
+    background-color: var(--soft-light-colour);
+
+    box-shadow: -2rem 2rem 0 var(--dark-container-colour);
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 2rem;
+
+
+    padding: 1rem 2rem;
+
+}
+
+
+
+.header{
+    font-size: 4rem;
+    font-weight: bolder;
+
+    background-color: var(--blue-selected-button-colour);
+    color: white;
+
+    padding: .8rem .5rem;
+    /* padding-right: 1rem; */
+
+    box-shadow: -.5rem .5rem 0 white;
+}
+
+
+.inputLabelContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: .5rem;
+
+    width: 80%;
+
+    &>label{
+        font-weight: bold;
+    }
+
+    &>input[type="text"]{
+        padding: .5rem .5rem;
+
+        width: 100%;
+    }
+
+
+
+}
+
+
+.submitBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 10rem;
+
+    padding: 1rem;
+
+    cursor: pointer;
+
+    margin-top: auto;
+    margin-bottom: 3rem;
+
+    background-color: var(--dark-container-colour);
+    color: white;
+
+
+    transition: background-color .2s linear, color .2s linear, margin-left .2s linear;
+}
+
+.submitBtn:hover{
+    background-color: white;
+    color: var(--dark-container-colour);
+
+
+    margin-left: 1rem;
+}
+
+
+.error{
+    color: white;
+    background-color: red;
+
+    margin-bottom: 1rem;
+
+    box-shadow: -.5rem .5rem 0 white;
+
+    padding: .5rem .8rem;
+}

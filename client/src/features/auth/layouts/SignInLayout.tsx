@@ -10,6 +10,8 @@ import { ISignInContext } from "../models/ISignInContext";
 import { BackgroundVideoContainer } from "../../../components/BackgroundVideoContainer";
 import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
 import { accessTokenLocalStorageKey } from "../../../constants/constants";
+import { useAuth } from "../../../context/useAuthLevel";
+import { userAuth } from "../../../constants/authContexts";
 
 
 export function SignInLayout() {
@@ -83,7 +85,9 @@ export function SignInLayout() {
 
 
 
-
+    const {
+        setUserAuth
+    } = useAuth();
 
 
 
@@ -104,6 +108,7 @@ export function SignInLayout() {
             const accessTokenResult = AccessTokenResponseSchema.safeParse(responseData);
             if (accessTokenResult.success) {
                 localStorage.setItem(accessTokenLocalStorageKey, accessTokenResult.data.accessToken);
+                setUserAuth(userAuth());
                 navigate("/");
                 return;
             }

@@ -9,6 +9,9 @@ import { LoadingCircle } from "../../../components/LoadingCircle";
 import { formResponseHandler } from "../../../services/FormResponseHandler";
 import { APIErrorSchema } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
+import { useAuth } from "../../../context/useAuthLevel";
+import { resolveAuthResponse } from "../../../services/AuthHandler";
+import { guestAuth, userAuth as userAuthFunc } from "../../../constants/authContexts";
 
 type IMainBlogProps = {
     blog: IBlogsWithoutComments,
@@ -23,12 +26,16 @@ export function MainBlog({
 
 
     const navigate = useNavigate();
+    const { 
+        userAuth,
+        setUserAuth
+    } = useAuth();
 
     const [onDelIsLoading, setOnDelLoading] = useState<boolean>(false);
 
 
     const onView = () => {
-        navigate(`/blog/${blog.id}`, { replace: true })
+        navigate(`/blog/${blog.id}`, { replace: true });
     }
 
     const onDel = async () => {
@@ -44,14 +51,30 @@ export function MainBlog({
                 navigate
             );
 
+
             if (!response) {
                 return;
             }
 
-            if (response.type === "customError") {
+
+            if (response.type === "userAuthError" && response.status === 401) {
+                setUserAuth(guestAuth());
                 alert(response.error.message);
                 return;
             }
+
+            if (response.type === "userAuthError" && response.status === 403) {
+                setUserAuth(userAuthFunc());
+                alert(response.error.message);
+                return;
+            }
+
+
+            if (response.type === "customError" || response.type === "userAuthError") {
+                alert(response.error.message);
+                return;
+            }
+
 
             if (response.data.status === 204) {
                 //SUCCESS FUNCTIONALITY
@@ -112,20 +135,24 @@ export function MainBlog({
                                 View
                             </button>
 
-                            <button onClick={onDel} className={`${styles.btn} ${styles.delBtn}`} type="button">
-                                {
-                                    onDelIsLoading ?
-                                        <LoadingCircle height="100%" />
+                            {
+                                userAuth.authLevel.deleteBlogPermission &&
+                                    <button onClick={onDel} className={`${styles.btn} ${styles.delBtn}`} type="button">
+                                        {
+                                            onDelIsLoading ?
+                                                <LoadingCircle height="100%" />
 
-                                        :
+                                                :
 
-                                        "Delete"
-
-
-                                }
+                                                "Delete"
 
 
-                            </button>
+                                        }
+
+
+                                    </button>
+                            }
+
 
                         </div>
 

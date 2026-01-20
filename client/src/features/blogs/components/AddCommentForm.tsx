@@ -10,6 +10,9 @@ import { useNavigate } from "react-router-dom"
 import { CommentResponseSchema, IComment } from "../../../../../shared/features/comments/models/ICommentResponse"
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants"
 import { LoadingCircle } from "../../../components/LoadingCircle"
+import { resolveAuthResponse } from "../../../services/AuthHandler"
+import { useAuth } from "../../../context/useAuthLevel"
+import { guestAuth } from "../../../constants/authContexts"
 
 type IAddCommentFormProps = {
     blogId: string,
@@ -37,7 +40,11 @@ export function AddCommentForm({
 
     });
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const {
+        setUserAuth
+    } = useAuth();
 
     const onSubmit = async (data: ICommentRequestClient) => {
 
@@ -73,6 +80,19 @@ export function AddCommentForm({
                 return;
             }
 
+
+            //CAN ONLY BE 401
+            if (response.type === "userAuthError") {
+                setUserAuth(guestAuth());
+                setError("root", {
+                    message: response.error.message,
+                    type: "server"
+                });
+                return;
+
+            }
+
+
             if (response.type === "customError") {
                 setError("root", {
                     message: response.error.message,
@@ -106,11 +126,6 @@ export function AddCommentForm({
             return;
 
 
-
-
-
-
-
             
         } catch (error) {
             setError("root", {
@@ -127,6 +142,8 @@ export function AddCommentForm({
 
 
     }
+
+
 
 
 

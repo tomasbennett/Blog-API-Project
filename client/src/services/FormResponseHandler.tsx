@@ -11,17 +11,20 @@ import { IResponseTypes } from "../models/IResponseTypes";
 export async function formResponseHandler(
     url: string,
     fetchOptions: RequestInit,
-    navigate: NavigateFunction,
-    // abortController: AbortController | null
-): Promise<IResponseTypes | null> {
+    navigate: NavigateFunction
+): Promise<IResponseTypes<Response> | null> {
     const accessToken = await GetAccessToken(navigate);
     if (!accessToken) return null;
+
+    if (accessToken.type !== "response") {
+        return accessToken;
+    }
 
     const res = await FetchHandlerHelper(
         url,
         fetchOptions,
         navigate,
-        accessToken
+        accessToken.data
     );
 
 
@@ -37,7 +40,7 @@ async function FetchHandlerHelper(
     navigate: NavigateFunction,
     accessToken: string,
     hasRetried: boolean = false
-): Promise<IResponseTypes | null> {
+): Promise<IResponseTypes<Response> | null> {
     try {
 
 
@@ -71,7 +74,14 @@ async function FetchHandlerHelper(
 
             } catch (err) {
                 console.error("Error parsing server error response:", err);
-                return { type: "customError", error: jsonParsingError };
+                navigate('/error', {
+                    replace: true,
+                    state: {
+                        error: jsonParsingError
+                    }
+                });
+
+                return null;
 
             }
 
@@ -85,6 +95,7 @@ async function FetchHandlerHelper(
             return null;
         }
 
+
         if (response.status === 401) {
             console.log("DATA SENT CORRECTLY FROM ERROR HANDLER!!!");
 
@@ -93,11 +104,15 @@ async function FetchHandlerHelper(
                 const newAccessToken = await NewAccessTokenRequest(navigate);
                 if (!newAccessToken) return null;
 
+                if (newAccessToken.type !== "response") {
+                    return newAccessToken;
+                }
+
                 const res = await FetchHandlerHelper(
                     url,
                     fetchOptions,
                     navigate,
-                    newAccessToken,
+                    newAccessToken.data,
                     true
                 );
 
@@ -105,34 +120,52 @@ async function FetchHandlerHelper(
 
             }
 
-
-
-
-
-            const signInError: ISignInError = {
-                message: "You were logged out!!!",
-                inputType: "root"
-            }
-            navigate('/sign-in/login', {
-                replace: true,
-                state: {
-                    error: signInError
+            return {
+                type: "userAuthError",
+                status: 401,
+                error: {
+                    ok: false,
+                    status: 401,
+                    message: "Your session has expired. Please sign in again!!!"
                 }
-            });
-
-            return null;
+            };
 
         }
 
+        if (response.status === 403) {
+            return {
+                type: "userAuthError",
+                status: 403,
+                error: {
+                    ok: false,
+                    status: 403,
+                    message: "You do not have permission to perform this action!!!"
+                }
+            };
+        }
+
+
+        //THIS DOESN'T MEAN THAT THE RESPONSE IS CORRECT OR NOT AN ERROR
+        //WHAT WE DO ON THE COMPONENT END IS JUST CHECK THE TYPE FOR USERAUTH AND THEN RUN THE SAME FUNCTIONALITY WITH SETTING USEAUTH CONTEXT FROM THERE
+
+        //SO ISSUE IS THAT WE ONLY REALLY WANT TO RETURN RESPONSE OR USERAUTHERROR HERE
+
+        // const resJson = await response.json();
+
+        // const customErrorResult = APIErrorSchema.safeParse(resJson);
+        // if (customErrorResult.success) {
+        //     return {
+        //         type: "customError",
+        //         status: response.status,
+        //         error: customErrorResult.data
+        //     };
+        // }
+
         return {
             type: "response",
+            // status: 200,
             data: response
-        };
-
-
-
-
-
+        }
 
 
     } catch (error: unknown) {
@@ -164,10 +197,15 @@ async function FetchHandlerHelper(
             status: 0,
             message: error.message
         };
-        return {
-            type: "customError",
-            error: customError
-        };
+
+        navigate('/error', {
+            replace: true,
+            state: {
+                error: customError
+            }
+        });
+
+        return null;
 
     }
 }

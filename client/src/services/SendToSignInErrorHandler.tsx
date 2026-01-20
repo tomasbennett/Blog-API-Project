@@ -1,16 +1,18 @@
 import { NavigateFunction } from "react-router-dom";
 import { ISignInError } from "../../../shared/features/auth/models/ILoginSchema";
+import { ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
 
 export function SendToSignInErrorHandler(
     error: unknown,
     navigate: NavigateFunction
 ) {
     if (error instanceof Error) {
-        const signInError: ISignInError = {
-            inputType: "root",
+        const signInError: ICustomErrorResponse = {
+            ok: false,
+            status: 0,
             message: error.message
         }
-        navigate("/sign-in/login", {
+        navigate("/error", {
             state: {
                 error: signInError
             }
@@ -18,11 +20,12 @@ export function SendToSignInErrorHandler(
     }
 
 
-    const signInError: ISignInError = {
-        inputType: "root",
-        message: "An unknown error occurred attempting to refresh your access token!!!"
+    const signInError: ICustomErrorResponse = {
+        ok: false,
+        status: 0,
+        message: "An unknown error occurred."
     }
-    navigate("/sign-in/login", {
+    navigate("/error", {
         state: {
             error: signInError
         }

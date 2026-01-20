@@ -1,6 +1,8 @@
 .outerContainer{
     --outer-container-padding: 1.5rem;
 
+    --containers-width: min(70rem, 95%);
+
     width: 100%;
     height: 100%;
 

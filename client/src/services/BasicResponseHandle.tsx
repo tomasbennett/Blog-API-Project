@@ -6,22 +6,28 @@ import { ISignInError } from "../../../shared/features/auth/models/ILoginSchema"
 import { accessTokenLocalStorageKey, jsonParsingError } from "../constants/constants";
 import { NewAccessTokenRequest } from "./NewAccessTokenRequest";
 import { GetAccessToken } from "./GetAccessToken";
+import { IResponseTypes } from "../models/IResponseTypes";
 
+
+//In this one if its a customError then we can set the setIsError state BUT if it's userAuthError we need to return it to the component
 export async function basicResponseHandle(
     url: string,
     fetchOptions: RequestInit,
     navigate: NavigateFunction,
     setIsError: React.Dispatch<React.SetStateAction<ICustomErrorResponse | null>>,
-): Promise<Response | null> {
+): Promise<IResponseTypes<Response> | null> {
     const accessToken = await GetAccessToken(navigate);
     if (!accessToken) return null;
 
+    if (accessToken.type !== "response") {
+        return accessToken;
+    }
 
     const res = await FetchHandlerHelper(
         url,
         fetchOptions,
         navigate,
-        accessToken,
+        accessToken.data,
         setIsError
     );
 
@@ -39,7 +45,7 @@ async function FetchHandlerHelper(
     accessToken: string,
     setIsError: React.Dispatch<React.SetStateAction<ICustomErrorResponse | null>>,
     hasRetried: boolean = false
-): Promise<Response | null> {
+): Promise<IResponseTypes<Response> | null> {
     try {
 
 
@@ -92,40 +98,57 @@ async function FetchHandlerHelper(
             console.log("DATA SENT CORRECTLY FROM ERROR HANDLER!!!");
 
             if (!hasRetried) {
-                const newAccessToken = NewAccessTokenRequest(navigate);
+                const newAccessToken = await NewAccessTokenRequest(navigate);
                 if (!newAccessToken) return null;
+
+                if (newAccessToken.type !== "response") {
+                    return newAccessToken;
+                }
 
                 const res = await FetchHandlerHelper(
                     url,
                     fetchOptions,
                     navigate,
-                    accessToken,
+                    newAccessToken.data,
                     setIsError,
                     true
                 );
 
-                return res
+                return res;
 
             }
 
 
 
-            const signInError: ISignInError = {
-                message: "You were logged out!!!",
-                inputType: "root"
-            }
-            navigate('/sign-in/login', {
-                replace: true,
-                state: {
-                    error: signInError
+            return {
+                type: "userAuthError",
+                status: 401,
+                error: {
+                    ok: false,
+                    status: 401,
+                    message: "Your session has expired. Please sign in again!!!"
                 }
-            });
-
-            return null;
+            };
 
         }
 
-        return response;
+        if (response.status === 403) {
+            return {
+                type: "userAuthError",
+                status: 403,
+                error: {
+                    ok: false,
+                    status: 403,
+                    message: "You do not have permission to perform this action!!!"
+                }
+            };
+        }
+
+        return {
+            type: "response",
+            // status: 200,
+            data: response
+        };
 
 
 

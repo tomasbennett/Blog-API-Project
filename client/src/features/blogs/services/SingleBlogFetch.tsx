@@ -6,6 +6,8 @@ import { SingleBlogResponseSchema } from "../../../../../shared/features/blogs/m
 import { notExpectedFormatError, jsonParsingError } from "../../../constants/constants";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { domain } from "../../../services/EnvironmentAPI";
+import { useAuth } from "../../../context/useAuthLevel";
+import { resolveAuthResponse } from "../../../services/AuthHandler";
 
 export function SingleBlogFetch() {
 
@@ -21,6 +23,7 @@ export function SingleBlogFetch() {
     } = useOutletContext<ISingleBlogPageContext>();
 
     const navigate = useNavigate();
+
 
     useEffect(() => {
         
@@ -40,20 +43,13 @@ export function SingleBlogFetch() {
                 setIsError(null);
                 setBlog(null);
     
-                const response = await basicResponseHandle(
+                const response = await fetch(
                     `${domain}/api/blogs/${blogId}`,
                     {
                         method: "GET",
     
-                    },
-                    navigate,
-                    setIsError
+                    }
                 );
-    
-    
-                if (!response) {
-                    return;
-                }
     
                 
                 const resJson = await response.json();

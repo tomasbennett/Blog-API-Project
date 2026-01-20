@@ -13,6 +13,8 @@ import { ContactsPage } from './components/ContactsPage'
 import { SingleBlogLayout } from './features/blogs/layouts/SingleBlogLayout'
 import { RandomBlog } from './features/blogs/services/RandomBlog'
 import { SingleBlogFetch } from './features/blogs/services/SingleBlogFetch'
+import { AuthProvider } from './context/useAuthLevel'
+import { AdminLayoutPage } from './features/auth/layouts/AdminLayoutPage'
 
 
 const router = createBrowserRouter([
@@ -30,7 +32,7 @@ const router = createBrowserRouter([
         element: <ErrorPageLayout />,
       },
       {
-        element: <NotAuthenticatedRoute />,
+        element: <ProtectedRoute />,
         children: [
           {
             path: "sign-in",
@@ -57,7 +59,7 @@ const router = createBrowserRouter([
         ]
       },
       {
-        element: <ProtectedRoute />,
+        element: <NotAuthenticatedRoute />,
         children: [
           {
             element: <ContentPagesLayout />,
@@ -91,6 +93,10 @@ const router = createBrowserRouter([
               {
                 path: "post",
                 element: <PostBlogPageLayout />
+              },
+              {
+                path: "admin",
+                element: <AdminLayoutPage />
               }
             ]
           },
@@ -109,7 +115,12 @@ function App() {
 
   return (
     <>
+    <AuthProvider>
+      
       <RouterProvider router={router} />
+
+    </AuthProvider>
+
     </>
   )
 }

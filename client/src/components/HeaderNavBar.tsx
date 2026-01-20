@@ -8,10 +8,17 @@ import styles from "./HeaderNavBar.module.css";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
 import { accessTokenLocalStorageKey, jsonParsingError, notExpectedFormatError } from "../constants/constants";
+import { useAuth } from "../context/useAuthLevel";
+import { guestAuth } from "../constants/authContexts";
 
 export function HeaderNavBar() {
 
     const navigate = useNavigate();
+
+    const {
+        userAuth,
+        setUserAuth
+    } = useAuth();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<ICustomErrorResponse | null>(null);
@@ -50,16 +57,32 @@ export function HeaderNavBar() {
                 return;
             }
 
-            if (response.status === 204) {
+            //SO HERE YOU CAN ONLY GET A 401 OR A CUSTOM ERROR
+
+            if (response.type === "userAuthError") {
+                setUserAuth(guestAuth());
+                setIsError(response.error);
+
+                return;
+            }
+
+            if (response.type === "customError") {
+                setIsError(response.error);
+                return;
+            }
+
+
+
+
+            if (response.data.status === 204) {
                 localStorage.removeItem(accessTokenLocalStorageKey);
                 // Maybe navigate here to login or change signin state on the main page
-                navigate("/sign-in/login", { replace: true });
-
+                setUserAuth(guestAuth());
                 return;
 
             }
 
-            const json = await response.json();
+            const json = await response.data.json();
             const errorResult = APIErrorSchema.safeParse(json);
 
             if (errorResult.success) {
@@ -123,22 +146,41 @@ export function HeaderNavBar() {
 
                             </li>
 
-                            <li>
+                            {
+                                userAuth.authLevel.postPermission &&
+                                    <li>
 
-                                <NavLink className={setActive} to={"/post"}>
-                                    Post
-                                </NavLink>
+                                        <NavLink className={setActive} to={"/post"}>
+                                            Post
+                                        </NavLink>
 
-                            </li>
+                                    </li>
+                            }
+                            {
+                                userAuth.authLevel.level === "USER" &&
+                                    <li>
+
+                                        <NavLink className={setActive} to={"/admin"}>
+                                            Admin
+                                        </NavLink>
+
+                                    </li>
+
+                            }
+
 
                         </ul>
                     </nav>
 
-                    <div onClick={onLogout} className={styles.signInOrOutContainer}>
+                    {
+                        userAuth.authLevel.logoutPermission &&
+                            <div onClick={onLogout} className={styles.signInOrOutContainer}>
 
-                        <LogoutIcon />
+                                <LogoutIcon />
 
-                    </div>
+                            </div>
+                    }
+
 
 
                 </div>

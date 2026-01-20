@@ -1,35 +1,31 @@
-import { useEffect, useState } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, Outlet } from "react-router-dom";
 import { LoadingCircle } from "../../../components/LoadingCircle";
-import { domain } from "../../../services/EnvironmentAPI";
-import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
-import { APIErrorSchema } from "../../../../../shared/features/api/models/APIErrorResponse";
-import { notExpectedFormatError } from "../../../constants/constants";
-import { ISignInError } from "../../../../../shared/features/auth/models/ILoginSchema";
-import { NewAccessTokenRequest } from "../../../services/NewAccessTokenRequest";
-import { SendToSignInErrorHandler } from "../../../services/SendToSignInErrorHandler";
 import { useCheckAuth } from "../hooks/useCheckAuth";
 
 
 
 
 export function ProtectedRoute() {
-    const { auth } = useCheckAuth();
-
-    useEffect(() => {
-        console.log("Protected route is running: " + auth);
-    }, []);
+    const { userAuth } = useCheckAuth();
 
 
-    if (auth === null) {
+
+    // useEffect(() => {
+    //     console.log("Protected route is running: " + auth);
+    // }, []);
+
+
+    if (userAuth.isLoading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%', flex: '1 1 0' }}>
                 <LoadingCircle height="5rem" />
             </div>
         )
 
-    } else if (auth === false) {
-        return <Navigate to="/sign-in/login" replace />;
+    } else if (userAuth.authLevel.logoutPermission) {
+        return <Navigate to="/" replace />;
+        // return <Outlet />;
 
     } else {
         return <Outlet />;
@@ -41,14 +37,14 @@ export function ProtectedRoute() {
 
 
 export function NotAuthenticatedRoute() {
-    const { auth } = useCheckAuth();
+    const { userAuth } = useCheckAuth();
 
-    useEffect(() => {
-        console.log("Notprotected route is running: " + auth);
-    }, []);
+    // useEffect(() => {
+    //     console.log("Notprotected route is running: " + auth);
+    // }, []);
 
 
-    if (auth === null) {
+    if (userAuth.isLoading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%', flex: '1 1 0' }}>
                 <LoadingCircle height="5rem" />
@@ -56,9 +52,5 @@ export function NotAuthenticatedRoute() {
         )
     }
 
-    if (auth === false) {
-        return <Outlet />;
-    }
-
-    return <Navigate to="/" replace />;
+    return <Outlet />;
 }
