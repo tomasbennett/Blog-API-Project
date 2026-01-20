@@ -30,8 +30,10 @@ export async function issueSignedInResponse(user: User, res: Response<ISignInErr
                 expiresAt: new Date(Date.now() + expiry)
             }
         });
+
+        console.log("A new refresh token has been created for user ID:", user.id);
     
-        res
+        return res
             .cookie(refreshTokenCookieKey, refreshToken, {
                 httpOnly: true,
                 secure: environment === "PROD",
@@ -49,7 +51,14 @@ export async function issueSignedInResponse(user: User, res: Response<ISignInErr
 
     } catch (error) {
         console.error("Error issuing signed-in response:", error);
-        res.status(500).json({
+        if (error instanceof Error) {
+            return res.status(500).json({
+                message: error.message,
+                inputType: "root"
+            });
+        }
+
+        return res.status(500).json({
             message: "Internal server error creating refresh token",
             inputType: "root"
         });

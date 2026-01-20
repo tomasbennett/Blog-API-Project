@@ -122,10 +122,17 @@ export function SingleBlogLayout() {
 
                                     </div>
                                 :
+                                    comments.length > 0 ?
 
-                                    <p>
-                                        Check out some of these comments...
-                                    </p>
+                                    <div className={styles.noAddCommentFormContainer}>
+                                        <p className={styles.noAddCommentForm}>
+                                            Check out some of these comments...
+                                        </p>
+                                    </div>
+
+                                    :
+
+                                    null
                             }
 
 

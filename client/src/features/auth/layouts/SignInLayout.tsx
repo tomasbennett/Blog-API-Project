@@ -95,6 +95,7 @@ export function SignInLayout() {
         try {
             const response = await fetch(`${domain}/api/${submitUrl}`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 },

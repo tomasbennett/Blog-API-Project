@@ -70,7 +70,7 @@ router.post("/login", async (req: Request<{}, {}, ILoginForm>, res: Response<ISi
 
         // WE WANT TO CREATE AN ACCESS TOKEN AND A REFRESH TOKEN FOR THE USER SENDING THE REFRESH TOKEN AS A COOKIE AND THE ACCESS TOKEN IN THE RESPONSE BODY
         
-        await issueSignedInResponse(user, res);
+        return await issueSignedInResponse(user, res);
 
 
 

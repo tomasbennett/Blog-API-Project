@@ -134,5 +134,47 @@
     display: flex;
     flex-direction: column;
 
+    width: var(--containers-width);
+
     row-gap: 4rem;
+}
+
+
+
+.noAddCommentFormContainer{
+    width: var(--containers-width);
+    /* align-self: flex-start; */
+
+    
+
+    background-color: var(--soft-light-colour);
+
+    padding: var(--containers-padding);
+
+    box-shadow: var(--containers-box-shadow);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.noAddCommentForm{
+    font-size: 1.8rem;
+
+    background-color: var(--blue-selected-button-colour);
+    color: white;
+
+    padding: .5rem;
+
+    box-shadow: -.5rem .5rem 0 white;
+
+    font-size: 3rem;
+
+    background-color: var(--blue-selected-button-colour);
+    color: white;
+
+    padding: .5rem;
+
+    box-shadow: -.5rem .5rem 0 white;
+
 }

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import styles from "./PostBlogPageLayout.module.css";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { INewBlogReq, NewBlogReqSchema } from "../../../../../shared/features/blogs/models/INewBlogClientRequest";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
@@ -15,6 +15,17 @@ import { guestAuth, userAuth as userAuthFunc } from "../../../constants/authCont
 
 
 export function PostBlogPageLayout() {
+
+    const { userAuth, setUserAuth } = useAuth();
+
+
+    if (userAuth.authLevel.postPermission === false) {
+        return <Navigate to="/" replace />;
+    }
+
+
+
+
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -45,7 +56,6 @@ export function PostBlogPageLayout() {
     }, []);
 
 
-    const { userAuth, setUserAuth } = useAuth();
 
     const onSubmit = async (data: INewBlogReq) => {
 

@@ -14,13 +14,14 @@ router.post("/admin/create", ensureAuthentication, async (req: Request<{}, {}, I
 
     try {
 
-        if (adminSecret !== process.env.ADMIN_SECRET || "ADMIN_SECRET") {
-            const invalidAdminSecretError: ICustomErrorResponse = {
+        const serverSecret = process.env.ADMIN_SECRET;
+
+        if (!serverSecret || adminSecret !== serverSecret) {
+            return res.status(400).json({
                 ok: false,
-                status: 404,
+                status: 400,
                 message: "Invalid admin secret!!!"
-            }
-            return res.status(invalidAdminSecretError.status).json(invalidAdminSecretError);
+            });
         }
 
 

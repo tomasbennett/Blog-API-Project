@@ -6,13 +6,32 @@ import { useState } from "react";
 import { LoadingCircle } from "../../../components/LoadingCircle";
 import { formResponseHandler } from "../../../services/FormResponseHandler";
 import { domain } from "../../../services/EnvironmentAPI";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/useAuthLevel";
 import { adminAuth, guestAuth } from "../../../constants/authContexts";
 import { APIErrorSchema } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
 
 export function AdminLayoutPage() {
+    const {
+        userAuth,
+        setUserAuth
+    } = useAuth();
+
+
+    if (userAuth.authLevel.level !== "USER") {
+        return <Navigate to="/" replace />;
+    }
+
+
+
+
+
+
+
+
+
+
 
     const {
         register,
@@ -29,9 +48,6 @@ export function AdminLayoutPage() {
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const {
-        setUserAuth
-    } = useAuth();
 
     const navigate = useNavigate();
 
