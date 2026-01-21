@@ -9,7 +9,9 @@ export function AboutPage() {
 
     return (
         <>
-            <div className={styles.aboutInnerContainer}>
+            <div className={styles.outerContainer}>
+
+                <div className={styles.aboutInnerContainer}>
                     <header className={styles.headerSection}>
                         <h1 className={styles.title}>About the Blog Project</h1>
                         <p className={styles.subtitle}>
@@ -19,7 +21,7 @@ export function AboutPage() {
 
                     <section
                         className={`${styles.contentSection}`}>
-                        
+
                         <div className={styles.textContainer}>
                             <h2 className={styles.sectionTitle}>My Mission</h2>
                             <p className={styles.paragraph}>
@@ -61,6 +63,9 @@ export function AboutPage() {
                         </div>
                     </footer>
                 </div>
+
+            </div>
+
         </>
     )
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { LogoutIcon } from "../assets/icons/LogoutIcon";
 import { PostsIcon } from "../assets/icons/PostsIcon";
 import { basicResponseHandle } from "../services/BasicResponseHandle";
@@ -7,9 +7,10 @@ import styles from "./HeaderNavBar.module.css";
 
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { APIErrorSchema, ICustomErrorResponse } from "../../../shared/features/api/models/APIErrorResponse";
-import { accessTokenLocalStorageKey, jsonParsingError, notExpectedFormatError } from "../constants/constants";
+import { accessTokenLocalStorageKey, jsonParsingError, mediumScreenMaxWidth, notExpectedFormatError, thinScreenMaxWidth, wideScreenMINWidth } from "../constants/constants";
 import { useAuth } from "../context/useAuthLevel";
 import { guestAuth } from "../constants/authContexts";
+import { useMediaQuery } from "react-responsive";
 
 export function HeaderNavBar() {
 
@@ -104,9 +105,26 @@ export function HeaderNavBar() {
         }
     }
 
+
+    const isThinScreen: boolean = useMediaQuery({ maxWidth: thinScreenMaxWidth });
+    const isMediumScreen: boolean = useMediaQuery({ maxWidth: mediumScreenMaxWidth });
+    const isWideScreen: boolean = useMediaQuery({ minWidth: wideScreenMINWidth + 1 });
+
+    const outerContainerClassNames: string = useMemo(() => {
+
+        if (isThinScreen) {
+            return`${styles.thinOuterContainer}`;
+        } else if (isMediumScreen) {
+            return `${styles.mediumOuterContainer}`;
+        } else {
+            return `${styles.wideOuterContainer}`;
+        }
+
+    }, [isThinScreen, isMediumScreen, isWideScreen]);
+
     return (
         <>
-            <header className={styles.header}>
+            <header className={`${outerContainerClassNames} ${styles.header}`}>
 
                 <div className={styles.logoImgContainer}>
 

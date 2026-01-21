@@ -9,9 +9,10 @@ import { ISignInError, SignInErrorSchema, ILoginForm, loginFormSchema } from "..
 import { ISignInContext } from "../models/ISignInContext";
 import { BackgroundVideoContainer } from "../../../components/BackgroundVideoContainer";
 import { AccessTokenResponseSchema } from "../../../../../shared/features/auth/models/IAccessTokenResponse";
-import { accessTokenLocalStorageKey } from "../../../constants/constants";
+import { accessTokenLocalStorageKey, mediumScreenMaxWidth, thinScreenMaxWidth, wideScreenMINWidth } from "../../../constants/constants";
 import { useAuth } from "../../../context/useAuthLevel";
 import { userAuth } from "../../../constants/authContexts";
+import { useMediaQuery } from "react-responsive";
 
 
 export function SignInLayout() {
@@ -132,11 +133,28 @@ export function SignInLayout() {
         }
     }
 
+
+    const isThinScreen: boolean = useMediaQuery({ maxWidth: thinScreenMaxWidth });
+    const isMediumScreen: boolean = useMediaQuery({ maxWidth: mediumScreenMaxWidth });
+    const isWideScreen: boolean = useMediaQuery({ minWidth: wideScreenMINWidth + 1 });
+
+    const signInContainerClassNames: string = useMemo(() => {
+
+        if (isThinScreen) {
+            return`${styles.thinOuterContainer}`;
+        } else if (isMediumScreen) {
+            return `${styles.mediumOuterContainer}`;
+        } else {
+            return `${styles.wideOuterContainer}`;
+        }
+
+    }, [isThinScreen, isMediumScreen, isWideScreen]);
+
     return (
         <>
             <Outlet />
 
-            <div className={styles.signinOuterContainer}>
+            <div className={`${signInContainerClassNames} ${styles.signinOuterContainer}`}>
 
                 <div className={styles.backgroundVideoSection}>
 

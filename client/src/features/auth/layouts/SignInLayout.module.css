@@ -17,19 +17,6 @@
 }
 
 
-/* @media (hover: hover) and (pointer: fine) {
-    .signinOuterContainer {
-
-        width: 89%;
-        height: 89%;
-
-    }
-
-
-    .signinOuterContainer:hover {
-        transform: translate(-50%, -50%) scale(1.01);
-    }
-} */
 
 
 
@@ -40,37 +27,37 @@
 .signinOuterContainer>.backgroundVideoSection {
     flex: 1 1 0;
     position: relative;
-
+    
     height: 100%;
-
+    
     overflow: hidden;
 }
 
 .signinOuterContainer>.loginSection {
     position: relative;
-
+    
     z-index: 2;
-
+    
     flex-shrink: 0;
 
     height: 100%;
     width: 30%;
     min-width: min(40rem, 100%);
-
+    
     box-shadow: -1rem 0rem 2rem rgba(24, 24, 24, 0.4);
     /* border-left: rgb(65, 2, 148) .2rem solid; */
-
+    
     background: linear-gradient(135deg, #e2e2e2 0%, #eac9ff 100%);
-
+    
     background-color: #e2e2e2;
     color: black;
-
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-
+    
+    
 }
 
 
@@ -83,10 +70,10 @@
 
 
 .signinOuterContainer form {
-
+    
     width: 100%;
     /* height: 100%; */
-
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -101,7 +88,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5rem;
-
+    
     width: 100%;
     max-width: 30rem;
 }
@@ -114,7 +101,7 @@
 .inputGroup input {
     padding: .9rem 0;
     padding-left: .6rem;
-
+    
     font-size: 1.5rem;
     border-radius: .4rem;
     border: .1rem solid #333;
@@ -132,9 +119,9 @@
 .submitButton {
     /* width: 100%;
     max-width: 30rem; */
-
+    
     padding: 1.2rem 8rem;
-
+    
     background: var(--blue-selected-button-colour);
     color: white;
     border: none;
@@ -153,11 +140,11 @@
 .switchSignInParagraph {
     margin-top: 3rem;
     margin-bottom: 2rem;
-
+    
     display: flex;
     column-gap: .3rem;
-
-
+    
+    
     text-align: center;
     font-size: 1.4rem;
     color: #727272;
@@ -181,26 +168,26 @@
 
 .errorMessage {
     color: red;
-
+    
     margin-bottom: .5rem;
 }
 
 
 
 .welcomeMessageContainer {
-
+    
     display: flex;
     flex-direction: column;
-
+    
     /* max-width: 80rem; */
-
+    
     background-color: rgba(0, 0, 0, 0.151);
     border-radius: 1rem;
     backdrop-filter: blur(.5rem);
-
+    
     margin-top: 10rem;
-
-
+    
+    
     padding: 4rem 3rem;
 }
 
@@ -214,4 +201,42 @@
 .welcomeMessageContainer p {
     font-size: 2rem;
     line-height: 1.4;
+}
+
+
+
+.thinOuterContainer{
+    flex-direction: column;
+
+    .loginSection{
+        flex: 1 1 0;
+
+        min-height: 37rem;
+        width: 100%;
+    }
+
+    .backgroundVideoSection{
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: auto;
+
+        height: 25rem;
+    }
+
+
+
+    .welcomeMessageContainer{
+        margin-top: 2rem;
+
+        padding: 2rem 1.5rem;
+
+        h1{
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        p{
+            font-size: 1.6rem;
+        }
+    }
 }

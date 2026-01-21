@@ -1,4 +1,15 @@
 
+.outerContainer{
+    width: 100%;
+
+    flex: 1 1 0;
+
+    overflow: auto;
+
+}
+
+
+
 .aboutInnerContainer {
     width: 90%;
     max-width: 95rem;

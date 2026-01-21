@@ -10,10 +10,6 @@ type IBackgroundVideoContainerProps = {
 export function BackgroundVideoContainer({
     children
 }: IBackgroundVideoContainerProps) {
-    // const videoRef = useRef<HTMLVideoElement | null>(null);
-    // const setPlayBack = () => {
-    //     videoRef.current!.playbackRate = 0.9;
-    // }; onCanPlay={setPlayBack} ref={videoRef}
 
     return (
         <>

@@ -22,6 +22,9 @@
 }
 
 
+
+
+
 .logoImgContainer {
     --shadow: -.5rem .3rem 0 white;
 
@@ -185,4 +188,39 @@ ul.pageSelectionContainer {
 
     /* border: .1rem solid white; */
 
+}
+
+
+.thinOuterContainer{
+    padding: 0 .5rem;
+
+    column-gap: 1rem;
+
+
+
+
+    .logoImgContainer{
+        font-size: 2.5rem;
+
+        padding: 1.5rem 0;
+    }
+
+
+    .rightSideHeaderContainer{
+        column-gap: 2rem;
+    }
+
+    .signInOrOutContainer{
+        padding: 1rem 1rem;
+
+        &>svg {
+            height: 50%;
+        }
+    }
+
+    .basicLinkClass{
+        font-size: 1.5rem;
+
+        padding: .4rem 1rem;
+    }
 }
