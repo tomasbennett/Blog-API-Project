@@ -30,8 +30,6 @@ export async function issueSignedInResponse(user: User, res: Response<ISignInErr
                 expiresAt: new Date(Date.now() + expiry)
             }
         });
-
-        console.log("A new refresh token has been created for user ID:", user.id);
     
         return res
             .cookie(refreshTokenCookieKey, refreshToken, {
