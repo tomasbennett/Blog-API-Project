@@ -8,12 +8,13 @@ import { LoadingCircle } from "../../../components/LoadingCircle";
 import { formResponseHandler } from "../../../services/FormResponseHandler";
 import { domain } from "../../../services/EnvironmentAPI";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
-import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
+import { jsonParsingError, mediumScreenMaxWidth, notExpectedFormatError, thinScreenMaxWidth, wideScreenMINWidth } from "../../../constants/constants";
 import { formatDateUS } from "../../../services/DateFormatter";
 import { AddCommentForm } from "../components/AddCommentForm";
 import { IComment } from "../../../../../shared/features/comments/models/ICommentResponse";
 import { Comment } from "../components/Comment";
 import { useAuth } from "../../../context/useAuthLevel";
+import { useMediaQuery } from "react-responsive";
 
 
 
@@ -21,6 +22,8 @@ import { useAuth } from "../../../context/useAuthLevel";
 
 
 export function SingleBlogLayout() {
+
+
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isError, setIsError] = useState<ICustomErrorResponse | null>(null);
@@ -33,12 +36,6 @@ export function SingleBlogLayout() {
     } = useAuth();
 
 
-    useEffect(() => {
-        console.dir(blog);
-
-    }, [blog])
-
-
 
     const ctx: ISingleBlogPageContext = {
         setBlog,
@@ -47,7 +44,9 @@ export function SingleBlogLayout() {
         setComments
     }
 
-    useEffect(() => console.dir(useAuth), [useAuth]);
+    const isThinScreen: boolean = useMediaQuery({ maxWidth: thinScreenMaxWidth });
+    const isMediumScreen: boolean = useMediaQuery({ maxWidth: mediumScreenMaxWidth });
+    const isWideScreen: boolean = useMediaQuery({ minWidth: wideScreenMINWidth + 1 });
 
 
     return (

@@ -3,6 +3,8 @@ import { IBlog } from "../../../../../shared/features/blogs/models/IBlogsArrayRe
 import { IBlogsWithoutComments } from "../../../../../shared/features/blogs/models/IBlogsHomePage";
 import { domain } from "../../../services/EnvironmentAPI";
 import styles from "./SidebarBlog.module.css";
+import { useMediaQuery } from "react-responsive";
+import { thinScreenMaxWidth, mediumScreenMaxWidth, wideScreenMINWidth } from "../../../constants/constants";
 
 
 type ISidebarBlogProps = {
@@ -31,10 +33,27 @@ export function SidebarBlog({
     }
 
 
+    const isThinScreen: boolean = useMediaQuery({ maxWidth: thinScreenMaxWidth });
+    const isMediumScreen: boolean = useMediaQuery({ maxWidth: mediumScreenMaxWidth });
+    const isWideScreen: boolean = useMediaQuery({ minWidth: wideScreenMINWidth + 1 });
+
+    const blogContainerClassNames: string = useMemo(() => {
+
+        if (isThinScreen) {
+            return`${styles.thinOuterContainer}`;
+        } else if (isMediumScreen) {
+            return `${styles.mediumOuterContainer}`;
+        } else {
+            return `${styles.wideOuterContainer}`;
+        }
+
+    }, [isThinScreen, isMediumScreen, isWideScreen]);
+
+
     return (
         <>
         
-            <div onClick={onSelectBlog} className={`${styles.outerContainer} ${isCurrBlog && styles.selected}`}>
+            <div onClick={onSelectBlog} className={`${blogContainerClassNames} ${styles.outerContainer} ${isCurrBlog && styles.selected}`}>
 
                 <div className={styles.imgContainer}>
                     <p className={styles.usernameContainer}>

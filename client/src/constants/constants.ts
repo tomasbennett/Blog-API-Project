@@ -20,6 +20,6 @@ export const accessTokenLocalStorageKey: string = "accessToken";
 
 
 
-export const thinScreenMaxWidth: string = "";
-export const mediumScreenMaxWidth: string = "";
+export const thinScreenMaxWidth: string = "53.125rem";
+export const mediumScreenMaxWidth: string = "84.375rem";
 export const wideScreenMINWidth: string = mediumScreenMaxWidth;

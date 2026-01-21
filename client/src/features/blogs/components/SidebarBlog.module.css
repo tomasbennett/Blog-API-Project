@@ -17,7 +17,34 @@
     cursor: pointer;
 
     transition: background-color .2s ease, color .2s ease, transform .2s ease;
+
+
 }
+
+
+.thinOuterContainer{
+    flex-shrink: 0;
+
+    width: 25rem;
+
+    height: 95%;
+}
+
+.mediumOuterContainer{
+
+}
+
+.wideOuterContainer{
+
+}
+
+
+
+
+
+
+
+
 
 
 .imgContainer{

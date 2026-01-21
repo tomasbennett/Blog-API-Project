@@ -15,13 +15,17 @@ import { guestAuth, userAuth as userAuthFunc } from "../../../constants/authCont
 
 type IMainBlogProps = {
     blog: IBlogsWithoutComments,
-    setAllBlogsArr: React.Dispatch<React.SetStateAction<IBlogsWithoutComments[] | null>>
+    allBlogsArr: IBlogsWithoutComments[],
+    setAllBlogsArr: React.Dispatch<React.SetStateAction<IBlogsWithoutComments[] | null>>,
+    setCurrBlog: React.Dispatch<React.SetStateAction<IBlogsWithoutComments | null>>
 }
 
 
 export function MainBlog({
     blog,
-    setAllBlogsArr
+    allBlogsArr,
+    setAllBlogsArr,
+    setCurrBlog
 }: IMainBlogProps) {
 
 
@@ -81,6 +85,18 @@ export function MainBlog({
                 setAllBlogsArr(prev => {
                     return prev!.filter((prevBlog) => blog.id !== prevBlog.id)
                 });
+
+                if (allBlogsArr.length === 1) {
+                    setCurrBlog(null);
+                    return;
+                }
+
+                if (blog.id === allBlogsArr?.[0].id) {
+                    setCurrBlog(allBlogsArr?.[1] ?? null);
+                    return;
+                }
+
+                setCurrBlog(allBlogsArr?.[0] ?? null);
                 return;
             }
 

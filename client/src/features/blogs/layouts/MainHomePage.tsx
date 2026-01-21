@@ -5,12 +5,14 @@ import { BlogsArrayResponseSchema, IBlog, IBlogsArrayResponse } from "../../../.
 import { APIErrorSchema, ICustomErrorResponse } from "../../../../../shared/features/api/models/APIErrorResponse";
 import { basicResponseHandle } from "../../../services/BasicResponseHandle";
 import { domain } from "../../../services/EnvironmentAPI";
-import { jsonParsingError, notExpectedFormatError } from "../../../constants/constants";
+import { jsonParsingError, mediumScreenMaxWidth, notExpectedFormatError, thinScreenMaxWidth, wideScreenMINWidth } from "../../../constants/constants";
 import { SidebarBlog } from "../components/SidebarBlog";
 import { MainBlog } from "../components/MainBlog";
 import { BlogsWithoutCommentsResponseSchema, IBlogsWithoutComments } from "../../../../../shared/features/blogs/models/IBlogsHomePage";
 import { useAuth } from "../../../context/useAuthLevel";
 import { resolveAuthResponse } from "../../../services/AuthHandler";
+import { LoadingCircle } from "../../../components/LoadingCircle";
+import { useMediaQuery } from "react-responsive";
 
 
 export function MainHomePage() {
@@ -25,6 +27,11 @@ export function MainHomePage() {
     const {
         userAuth
     } = useAuth();
+
+    useEffect(() => { 
+        if (isError) console.error("Main Home Page Error:", isError); 
+
+    }, [isError]);
 
 
 
@@ -85,13 +92,6 @@ export function MainHomePage() {
     }, []);
 
 
-    useEffect(() => {
-        console.log("BLOGS ARRAY HAS CHANGED: ");
-        console.dir(allBlogsArr);
-        
-    }, [allBlogsArr]);
-
-
     const blogsLength: number = useMemo(() => {
         if (allBlogsArr) {
             return allBlogsArr.length;
@@ -103,79 +103,123 @@ export function MainHomePage() {
 
 
 
+
+    const isThinScreen: boolean = useMediaQuery({ maxWidth: thinScreenMaxWidth });
+    const isMediumScreen: boolean = useMediaQuery({ maxWidth: mediumScreenMaxWidth });
+    const isWideScreen: boolean = useMediaQuery({ minWidth: wideScreenMINWidth + 1 });
+
+    const outerContainerClassNames: string = useMemo(() => {
+
+        if (isThinScreen) {
+            return`${styles.thinOuterContainer}`;
+        } else if (isMediumScreen) {
+            return `${styles.mediumOuterContainer}`;
+        } else {
+            return `${styles.wideOuterContainer}`;
+        }
+
+    }, [isThinScreen, isMediumScreen, isWideScreen]);
+
+    const sidebarContainerClassNames: string = useMemo(() => {
+        if (isThinScreen) {
+            return`${styles.thinSidebarContainer}`;
+        } else if (isMediumScreen) {
+            return `${styles.mediumSidebarContainer}`;
+        } else {
+            return `${styles.wideSidebarContainer}`;
+        }
+
+    }, [isThinScreen, isMediumScreen, isWideScreen]);
+
     return (
         <>
-        
-            <div className={styles.outerContainer}>
 
-                <div className={styles.introContainer}>
-                    <h2>
-                        Welcome to my blog project home page
-                    </h2>
+            {
+                isLoading ?
 
-                    <div className={styles.lowerTextBtnContainer}>
-                        <p>
-                            Please select from one of the given blogs below to read more about it, and don't forget to sign in to leave a comment!!!
-                        </p>
-
-                        <button onClick={() => {
-                            navigate(userAuth.authLevel.mainMenuNav, { replace: true });
-                        }} className={styles.authLevelBtn} type="button">
-                            {
-                                userAuth.authLevel.mainMenuText
-                            }
-                        </button>
+                    <div className={styles.loadingContainer}>
+                        <LoadingCircle height="8rem" />
 
                     </div>
 
-
-                </div>
-
-
-
-
-                <div className={styles.currBlogSection}>
-
-                    {
-                        currBlog ?
-
-                            <MainBlog setAllBlogsArr={setAllBlogsArr} blog={currBlog} />
-
-                        :
-
-                            <p className={styles.noCurrBlog}>
-                                There are no blogs currently available
-                            </p>
-                    }
+                : 
+                
+                    <div className={`${outerContainerClassNames} ${styles.outerContainer}`}>
 
 
 
+                        <div className={styles.introContainer}>
+                            <h2>
+                                Welcome to my blog project home page
+                            </h2>
 
-                </div>
+                            <div className={styles.lowerTextBtnContainer}>
+                                <p>
+                                    Please select from one of the given blogs below to read more about it, and don't forget to sign in to leave a comment!!!
+                                </p>
 
-                <div className={styles.blogListScrollerSection}>
+                                <button onClick={() => {
+                                    navigate(userAuth.authLevel.mainMenuNav, { replace: true });
+                                }} className={styles.authLevelBtn} type="button">
+                                    {
+                                        userAuth.authLevel.mainMenuText
+                                    }
+                                </button>
 
-                    {
-                        blogsLength > 0 && currBlog ?
-
-                            allBlogsArr!.map((blog, indx) => {
-
-                                return (
-                                    <SidebarBlog setCurrBlog={setCurrBlog} currBlog={currBlog} blog={blog} key={blog.id} />
-                                )
-                            })
-
-
-                        :
-
-                        <p>There are no blogs currently</p>
-                    }
-
-                </div>
+                            </div>
 
 
+                        </div>
 
-            </div>
+
+
+
+                        <div className={styles.currBlogSection}>
+
+                            {
+                                currBlog && allBlogsArr ?
+
+                                    <MainBlog setCurrBlog={setCurrBlog} allBlogsArr={allBlogsArr} setAllBlogsArr={setAllBlogsArr} blog={currBlog} />
+
+                                :
+
+                                    <p className={styles.noCurrBlog}>
+                                        There are no blogs currently available
+                                    </p>
+                            }
+
+
+
+
+                        </div>
+
+                        <div className={`${sidebarContainerClassNames} ${styles.blogListScrollerSection}`}>
+
+                            {
+                                blogsLength > 0 && currBlog ?
+
+                                    allBlogsArr!.map((blog, indx) => {
+
+                                        return (
+                                            <SidebarBlog setCurrBlog={setCurrBlog} currBlog={currBlog} blog={blog} key={blog.id} />
+                                        )
+                                    })
+
+
+                                :
+
+                                <p>There are no blogs currently</p>
+                            }
+
+                        </div>
+
+
+
+                    </div>
+                    
+            }
+
+
         
         
         </>
